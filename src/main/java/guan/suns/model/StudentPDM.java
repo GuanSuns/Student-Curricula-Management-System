@@ -1,27 +1,28 @@
 package guan.suns.model;
 
+import guan.suns.basicClass.Department;
 import guan.suns.basicClass.Gender;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by lenovo on 2016/5/5.
  */
 
 @Entity
-@Table(name = "studentTable")
+@Table(name = "student_table")
 public class StudentPDM {
     @Id
-    @GeneratedValue
     @Column(name = "studentID", length = 10)
     private String studentID;
 
-    @OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE})
-    @JoinColumn(name="studentID",referencedColumnName="userID")
-    @Column(name = "userInfo")
-    private UserPDM userInfo;
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "studentName")
     private String name;
@@ -33,8 +34,8 @@ public class StudentPDM {
     @Column(name = "className")
     private String className;
 
-    @Column(name = "currentAge")
-    private Integer age;
+    @Column(name = "department")
+    private Department department;
 
     @Column(name = "enrolledAge")
     @Range(min = 10,max = 50)
@@ -43,15 +44,20 @@ public class StudentPDM {
     @Column(name = "enrolledTime")
     private Timestamp enrolledTime;
 
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE})
+    @JoinColumn(name = "studentID", referencedColumnName = "studentID")
+    private Set<CourseSeletionPDM> selectedCourses = new HashSet<CourseSeletionPDM>();
+
     public StudentPDM() {
     }
 
-    public StudentPDM(UserPDM userInfo, String name, Gender gender, String className, Integer age, Integer enrolledAge, Timestamp enrolledTime) {
-        this.userInfo = userInfo;
+    public StudentPDM(String studentID, String password, String name, Gender gender, String className, Department department, Integer enrolledAge, Timestamp enrolledTime) {
+        this.studentID = studentID;
+        this.password = password;
         this.name = name;
         this.gender = gender;
         this.className = className;
-        this.age = age;
+        this.department = department;
         this.enrolledAge = enrolledAge;
         this.enrolledTime = enrolledTime;
     }
@@ -64,12 +70,12 @@ public class StudentPDM {
         this.studentID = studentID;
     }
 
-    public UserPDM getUserInfo() {
-        return userInfo;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserInfo(UserPDM userInfo) {
-        this.userInfo = userInfo;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -96,12 +102,12 @@ public class StudentPDM {
         this.className = className;
     }
 
-    public Integer getAge() {
-        return age;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public Integer getEnrolledAge() {
@@ -118,5 +124,13 @@ public class StudentPDM {
 
     public void setEnrolledTime(Timestamp enrolledTime) {
         this.enrolledTime = enrolledTime;
+    }
+
+    public Set<CourseSeletionPDM> getSelectedCourses() {
+        return selectedCourses;
+    }
+
+    public void setSelectedCourses(Set<CourseSeletionPDM> selectedCourses) {
+        this.selectedCourses = selectedCourses;
     }
 }

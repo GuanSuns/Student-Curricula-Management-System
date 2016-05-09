@@ -41,7 +41,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public boolean deleteStudent(StudentPDM student) throws UserNotFoundException {
 
+        if(student == null
+                || student.getStudentID() == null
+                || student.getStudentID().length() != 10
+                )
+            return false;
 
+        StudentPDM newStudent = studentRepository.findOne(student.getStudentID());
+        if(newStudent == null) throw new UserNotFoundException();
+
+        studentRepository.delete(newStudent);
 
         return true;
     }

@@ -23,6 +23,9 @@ public class TeacherPDM {
     @Column(name = "teacherDepartment")
     private Department department;
 
+    @Column(name = "password")
+    private String password;
+
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "teacherID", referencedColumnName = "teacherID")
     private Set<CoursePDM> courses = new HashSet<CoursePDM>();
@@ -34,10 +37,19 @@ public class TeacherPDM {
     public TeacherPDM() {
     }
 
-    public TeacherPDM(String teacherID, String teacherName, Department department) {
+    public TeacherPDM(String teacherID, String teacherName, Department department, String password) {
         this.teacherID = teacherID;
         this.teacherName = teacherName;
         this.department = department;
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Set<CourseSeletionPDM> getBeSelectedCourses() {

@@ -1,12 +1,15 @@
 package guan.suns.controller;
 
 import guan.suns.controller.JsonProcessor.LoginRequestProcessor;
+import guan.suns.controller.JsonProcessor.StudentJsonProcessor.CreateStudentRequestProcessor;
 import guan.suns.controller.mappingUrl.UrlConstant;
 import guan.suns.exception.JsonErrorException;
 import guan.suns.exception.PasswordErrorException;
+import guan.suns.exception.UserExistedException;
 import guan.suns.exception.UserNotFoundException;
 import guan.suns.model.StudentPDM;
 import guan.suns.request.LoginRequest;
+import guan.suns.request.StudentRequest.CreateStudentRequest;
 import guan.suns.response.CommonResponse;
 import guan.suns.response.ResponseProcessor.CommonResponseProcessor;
 import guan.suns.response.responseConstant.*;
@@ -93,6 +96,74 @@ public class StudentAccountController {
         else{
             commonResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
             commonResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
+        }
+
+        return commonResponseProcessor.generateResponse(commonResponse);
+    }
+
+    @RequestMapping(value = UrlConstant.StudentCreate , method = RequestMethod.POST)
+    @ResponseBody
+    public String createStudent(HttpServletRequest httpServletRequest){
+
+        InputStream inputStream = null;
+        CommonResponse commonResponse = new CommonResponse();
+        CommonResponseProcessor commonResponseProcessor = new CommonResponseProcessor();
+        CreateStudentRequest createStudentRequest = null;
+        CreateStudentRequestProcessor createStudentRequestProcessor = new CreateStudentRequestProcessor();
+        StudentPDM newStudent = new StudentPDM();
+        boolean isSuccess;
+
+        try{
+            inputStream = httpServletRequest.getInputStream();
+
+            if(inputStream == null){
+                commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+                commonResponse.setInfo(ResponseString.HttpServletRequestIOException);
+                return commonResponseProcessor.generateResponse(commonResponse);
+            }
+
+            String requestBody = IOUtils.toString(inputStream,"utf-8");
+            createStudentRequest = createStudentRequestProcessor.getCreateRequest(requestBody);
+
+            newStudent.setClassName(createStudentRequest.getClassName());
+            newStudent.setDepartment(createStudentRequest.getDepartment());
+            newStudent.setName(createStudentRequest.getName());
+            newStudent.setPassword(createStudentRequest.getPassword());
+            newStudent.setEnrolledTime(createStudentRequest.getEnrolledTime());
+            newStudent.setEnrolledAge(createStudentRequest.getEnrolledAge());
+            newStudent.setStudentID(createStudentRequest.getId());
+            newStudent.setGender(createStudentRequest.getGender());
+
+            isSuccess = studentService.createStudent(newStudent);
+
+        }
+        catch (IOException ioException){
+            ioException.printStackTrace();
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.HttpServletRequestIOException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+        catch (JsonErrorException jsonErrorException){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.JsonProcessingErrorException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+        catch (UserExistedException userExistedException){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.CreateUserExistedException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+
+        if(isSuccess){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
+            commonResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
+        }
+        else{
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.UserInfoErrorException);
         }
 
         return commonResponseProcessor.generateResponse(commonResponse);

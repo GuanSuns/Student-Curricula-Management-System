@@ -1,5 +1,6 @@
 package guan.suns.service;
 
+import guan.suns.exception.PasswordErrorException;
 import guan.suns.exception.UserExistedException;
 import guan.suns.exception.UserNotFoundException;
 import guan.suns.model.StudentPDM;
@@ -54,4 +55,33 @@ public class StudentServiceImpl implements StudentService {
 
         return true;
     }
+
+    @Override
+    public StudentPDM loginStudent(StudentPDM student) throws UserNotFoundException, PasswordErrorException {
+
+        if(student == null
+                || student.getStudentID() == null
+                || student.getStudentID().length() != 10
+                || student.getPassword()==null
+                || student.getPassword().isEmpty()
+                ){
+            throw new UserNotFoundException();
+        }
+
+        StudentPDM getStudent = studentRepository.findOne(student.getStudentID());
+
+        if(getStudent==null){
+            throw new UserNotFoundException();
+        }
+        if(!getStudent.getPassword().equals(student.getPassword())){
+            throw new PasswordErrorException();
+        }
+
+        StudentPDM returnStudent = new StudentPDM(getStudent.getStudentID(),getStudent.getPassword(),getStudent.getName(),getStudent.getGender(),getStudent.getClassName(),getStudent.getDepartment(),getStudent.getEnrolledAge(),getStudent.getEnrolledTime());
+
+        return returnStudent;
+    }
+
+
+
 }

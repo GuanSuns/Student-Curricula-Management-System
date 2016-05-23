@@ -28,7 +28,7 @@ import java.io.InputStream;
  */
 @RestController
 @RequestMapping(value = UrlConstant.StudentAccountRoot)
-public class StudentAccountController {x
+public class StudentAccountController {
 
     @Autowired
     private StudentService studentService;

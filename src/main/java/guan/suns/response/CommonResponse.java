@@ -3,15 +3,15 @@ package guan.suns.response;
 /**
  * Created by lenovo on 2016/5/23.
  */
-public class LoginResponse {
+public class CommonResponse {
 
     private int status;
     private String info;
 
-    public LoginResponse() {
+    public CommonResponse() {
     }
 
-    public LoginResponse(int status, String info) {
+    public CommonResponse(int status, String info) {
         this.status = status;
         this.info = info;
     }

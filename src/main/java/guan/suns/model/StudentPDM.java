@@ -133,4 +133,18 @@ public class StudentPDM {
     public void setSelectedCourses(Set<CourseSeletionPDM> selectedCourses) {
         this.selectedCourses = selectedCourses;
     }
+
+    @Override
+    public String toString() {
+        return "StudentPDM{" +
+                "enrolledTime=" + enrolledTime +
+                ", studentID='" + studentID + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", gender=" + gender +
+                ", className='" + className + '\'' +
+                ", department=" + department +
+                ", enrolledAge=" + enrolledAge +
+                '}';
+    }
 }

@@ -134,6 +134,8 @@ public class StudentAccountController {
             newStudent.setStudentID(createStudentRequest.getId());
             newStudent.setGender(createStudentRequest.getGender());
 
+            //System.out.println(newStudent);
+
             isSuccess = studentService.createStudent(newStudent);
 
         }

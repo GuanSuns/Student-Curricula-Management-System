@@ -23,7 +23,9 @@ public class StudentServiceImpl implements StudentService {
 
         if(student == null
                 || student.getPassword() == null
+                || student.getPassword().equals("")
                 || student.getName() == null
+                || student.getName().equals("")
                 || student.getStudentID() == null
                 || student.getStudentID().length() != 10
                 || student.getEnrolledAge() < 10

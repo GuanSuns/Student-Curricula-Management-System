@@ -1,5 +1,6 @@
 package guan.suns.controller;
 
+import guan.suns.controller.JsonProcessor.DeleteUserRequestProcessor;
 import guan.suns.controller.JsonProcessor.LoginRequestProcessor;
 import guan.suns.controller.JsonProcessor.StudentJsonProcessor.CreateStudentRequestProcessor;
 import guan.suns.controller.mappingUrl.UrlConstant;
@@ -8,6 +9,7 @@ import guan.suns.exception.PasswordErrorException;
 import guan.suns.exception.UserExistedException;
 import guan.suns.exception.UserNotFoundException;
 import guan.suns.model.StudentPDM;
+import guan.suns.request.DeleteUserRequest;
 import guan.suns.request.LoginRequest;
 import guan.suns.request.StudentRequest.CreateStudentRequest;
 import guan.suns.response.CommonResponse;
@@ -26,6 +28,7 @@ import java.io.InputStream;
 /**
  * Created by lenovo on 2016/5/23.
  */
+
 @RestController
 @RequestMapping(value = UrlConstant.StudentAccountRoot)
 public class StudentAccountController {
@@ -166,6 +169,67 @@ public class StudentAccountController {
         else{
             commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
             commonResponse.setInfo(ResponseString.UserInfoErrorException);
+        }
+
+        return commonResponseProcessor.generateResponse(commonResponse);
+    }
+
+    @RequestMapping(value = UrlConstant.StudentDelete, method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteStudent(HttpServletRequest httpServletRequest){
+
+        InputStream inputStream = null;
+        CommonResponse commonResponse = new CommonResponse();
+        CommonResponseProcessor commonResponseProcessor = new CommonResponseProcessor();
+        DeleteUserRequest deleteUserRequest = null;
+        DeleteUserRequestProcessor deleteUserRequestProcessor = new DeleteUserRequestProcessor();
+        StudentPDM deleteStudent = new StudentPDM();
+        boolean isSuccess;
+
+        try{
+            inputStream = httpServletRequest.getInputStream();
+
+            if(inputStream == null){
+                commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+                commonResponse.setInfo(ResponseString.HttpServletRequestIOException);
+                return commonResponseProcessor.generateResponse(commonResponse);
+            }
+
+            String requestBody = IOUtils.toString(inputStream,"utf-8");
+            deleteUserRequest = deleteUserRequestProcessor.getDeleteRequest(requestBody);
+
+            deleteStudent.setStudentID(deleteUserRequest.getId());
+
+            isSuccess = studentService.deleteStudent(deleteStudent);
+
+        }
+        catch (IOException ioException){
+            ioException.printStackTrace();
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.HttpServletRequestIOException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+        catch (JsonErrorException jsonErrorException){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.JsonProcessingErrorException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+        catch (UserNotFoundException userNotFoundException){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.DeleteUserNotFoundException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+
+        if(isSuccess){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
+            commonResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
+        }
+        else{
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.FailToDeleteStudentDescription);
         }
 
         return commonResponseProcessor.generateResponse(commonResponse);

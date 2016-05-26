@@ -84,6 +84,24 @@ public class StudentServiceImpl implements StudentService {
         return returnStudent;
     }
 
+    @Override
+    public StudentPDM getStudentDetail(StudentPDM student) throws UserNotFoundException {
 
+        if(student == null
+                || student.getStudentID() == null
+                || student.getStudentID().length() != 10
+                ){
+            throw new UserNotFoundException();
+        }
 
+        StudentPDM getStudent = studentRepository.findOne(student.getStudentID());
+
+        if(getStudent==null){
+            throw new UserNotFoundException();
+        }
+
+        StudentPDM returnStudent = new StudentPDM(getStudent.getStudentID(),getStudent.getPassword(),getStudent.getName(),getStudent.getGender(),getStudent.getClassName(),getStudent.getDepartment(),getStudent.getEnrolledAge(),getStudent.getEnrolledTime());
+
+        return returnStudent;
+    }
 }

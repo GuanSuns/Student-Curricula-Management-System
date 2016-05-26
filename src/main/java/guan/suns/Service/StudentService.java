@@ -16,6 +16,6 @@ public interface StudentService {
 
     public boolean deleteStudent(StudentPDM student) throws UserNotFoundException;
 
-
+    public StudentPDM getStudentDetail(StudentPDM student) throws UserNotFoundException;
 
 }

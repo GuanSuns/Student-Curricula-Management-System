@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "student_table")
 public class StudentPDM {
     @Id
-    @Column(name = "studentID", length = 10)
+    @Column(name = "studentID")
     private String studentID;
 
     @Column(name = "password")

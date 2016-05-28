@@ -37,7 +37,7 @@ public class CoursePDM {
 
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "courseID", referencedColumnName = "courseID")
-    private Set<CourseSeletionPDM> selecteStudents = new HashSet<CourseSeletionPDM>();
+    private Set<CourseSeletionPDM> selectStudents = new HashSet<CourseSeletionPDM>();
 
 
     public CoursePDM() {
@@ -52,12 +52,12 @@ public class CoursePDM {
         this.suitableGrade = suitableGrade;
     }
 
-    public Set<CourseSeletionPDM> getSelecteStudents() {
-        return selecteStudents;
+    public Set<CourseSeletionPDM> getSelectStudents() {
+        return selectStudents;
     }
 
-    public void setSelecteStudents(Set<CourseSeletionPDM> selecteStudents) {
-        this.selecteStudents = selecteStudents;
+    public void setSelectStudents(Set<CourseSeletionPDM> selectStudents) {
+        this.selectStudents = selectStudents;
     }
 
     public String getCourseID() {

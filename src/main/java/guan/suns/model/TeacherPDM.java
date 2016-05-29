@@ -32,7 +32,7 @@ public class TeacherPDM {
 
     @OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "teacherID", referencedColumnName = "teacherID")
-    private Set<CourseSeletionPDM> beSelectedCourses = new HashSet<CourseSeletionPDM>();
+    private Set<CourseSelectionPDM> beSelectedCourses = new HashSet<CourseSelectionPDM>();
 
     public TeacherPDM() {
     }
@@ -52,11 +52,11 @@ public class TeacherPDM {
         this.password = password;
     }
 
-    public Set<CourseSeletionPDM> getBeSelectedCourses() {
+    public Set<CourseSelectionPDM> getBeSelectedCourses() {
         return beSelectedCourses;
     }
 
-    public void setBeSelectedCourses(Set<CourseSeletionPDM> beSelectedCourses) {
+    public void setBeSelectedCourses(Set<CourseSelectionPDM> beSelectedCourses) {
         this.beSelectedCourses = beSelectedCourses;
     }
 

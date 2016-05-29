@@ -2,7 +2,6 @@ package guan.suns.model;
 
 import guan.suns.basicClass.Department;
 import guan.suns.basicClass.Gender;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -46,7 +45,7 @@ public class StudentPDM {
 
     @OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "studentID", referencedColumnName = "studentID")
-    private Set<CourseSeletionPDM> selectedCourses = new HashSet<CourseSeletionPDM>();
+    private Set<CourseSelectionPDM> selectedCourses = new HashSet<CourseSelectionPDM>();
 
     public StudentPDM() {
     }
@@ -126,11 +125,11 @@ public class StudentPDM {
         this.enrolledTime = enrolledTime;
     }
 
-    public Set<CourseSeletionPDM> getSelectedCourses() {
+    public Set<CourseSelectionPDM> getSelectedCourses() {
         return selectedCourses;
     }
 
-    public void setSelectedCourses(Set<CourseSeletionPDM> selectedCourses) {
+    public void setSelectedCourses(Set<CourseSelectionPDM> selectedCourses) {
         this.selectedCourses = selectedCourses;
     }
 

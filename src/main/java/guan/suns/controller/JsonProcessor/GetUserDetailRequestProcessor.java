@@ -10,7 +10,7 @@ import guan.suns.request.GetUserDetailRequest;
  */
 public class GetUserDetailRequestProcessor {
 
-    public GetUserDetailRequest getDeleteRequest(String rawJson) throws JsonErrorException
+    public GetUserDetailRequest getRequest(String rawJson) throws JsonErrorException
     {
         ObjectMapper mapper = new ObjectMapper();
         GetUserDetailRequest request = new GetUserDetailRequest();

@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "course_selection_table")
-public class CourseSeletionPDM {
+public class CourseSelectionPDM {
     @Id
     private CourseSelectionCompositeId courseSelectionCompositeId;
 
@@ -24,10 +24,10 @@ public class CourseSeletionPDM {
     @Column(name = "selectYear")
     private Timestamp selectYear;
 
-    public CourseSeletionPDM() {
+    public CourseSelectionPDM() {
     }
 
-    public CourseSeletionPDM(CourseSelectionCompositeId courseSelectionCompositeId, TeacherPDM teacherID, Float score, Timestamp selectYear) {
+    public CourseSelectionPDM(CourseSelectionCompositeId courseSelectionCompositeId, TeacherPDM teacherID, Float score, Timestamp selectYear) {
         this.courseSelectionCompositeId = courseSelectionCompositeId;
         this.teacherID = teacherID;
         this.score = score;

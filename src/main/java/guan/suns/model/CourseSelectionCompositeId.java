@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Embeddable
 public class CourseSelectionCompositeId implements Serializable {
 
-    @ManyToOne( fetch = FetchType.EAGER )
+    @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn(name = "studentID", referencedColumnName = "studentID")
     private StudentPDM studentID;
 

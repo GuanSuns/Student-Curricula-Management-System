@@ -18,6 +18,10 @@ public class ResponseString {
     public static final String UserInfoErrorException = "Exception: User Info Error";
 
     public static final String DeleteUserNotFoundException = "Exception: User Not Found";
-    public static final String FailToDeleteStudentDescription = "Fail To Delete Student";
-    public static final String FailToDeleteTeacherDescription = "Fail To Delete Teacher";
+    public static final String FailToDeleteStudentDescription = "Exception: Fail To Delete Student";
+    public static final String FailToDeleteTeacherDescription = "Exception: Fail To Delete Teacher";
+
+    public static final String NotFoundUpdateUserDescription = "Exception: Fail To Update User, User Not Found";
+
+
 }

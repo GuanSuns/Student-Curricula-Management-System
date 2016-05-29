@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "teacher_table")
 public class TeacherPDM {
     @Id
-    @Column(name = "teacherID")
+    @Column(name = "teacherID", length = 5)
     private String teacherID;
 
     @Column(name = "teacherName")

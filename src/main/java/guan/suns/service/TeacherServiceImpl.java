@@ -2,6 +2,7 @@ package guan.suns.service;
 
 import guan.suns.exception.PasswordErrorException;
 import guan.suns.exception.UserExistedException;
+import guan.suns.exception.UserInfoErrorException;
 import guan.suns.exception.UserNotFoundException;
 import guan.suns.model.TeacherPDM;
 import guan.suns.repository.TeacherRepository;
@@ -44,7 +45,7 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public boolean createTeacher(TeacherPDM teacher) throws UserExistedException {
+    public boolean createTeacher(TeacherPDM teacher) throws UserExistedException, UserInfoErrorException {
         if(teacher == null
                 || teacher.getPassword() == null
                 || teacher.getPassword().equals("")
@@ -53,7 +54,7 @@ public class TeacherServiceImpl implements TeacherService{
                 || teacher.getTeacherID() == null
                 || teacher.getTeacherID().length() != 5
                 )
-            return false;
+            throw new UserInfoErrorException();
 
         TeacherPDM newTeacher = teacherRepository.findOne(teacher.getTeacherID());
         if(newTeacher != null) throw new UserExistedException();
@@ -98,4 +99,29 @@ public class TeacherServiceImpl implements TeacherService{
 
         return returnTeacher;
     }
+
+    @Override
+    public boolean updateTeacher(TeacherPDM teacher) throws UserNotFoundException, UserInfoErrorException {
+        if(teacher == null
+                || teacher.getPassword() == null
+                || teacher.getPassword().equals("")
+                || teacher.getTeacherName() == null
+                || teacher.getTeacherName().equals("")
+                || teacher.getTeacherID() == null
+                || teacher.getTeacherID().length() != 5
+                )
+            throw new UserInfoErrorException();
+
+        TeacherPDM newTeacher = teacherRepository.findOne(teacher.getTeacherID());
+        if(newTeacher == null) throw new UserNotFoundException();
+
+        newTeacher.setPassword(teacher.getPassword());
+        newTeacher.setTeacherName(teacher.getTeacherName());
+        newTeacher.setDepartment(teacher.getDepartment());
+
+        teacherRepository.save(newTeacher);
+
+        return true;
+    }
 }
+

@@ -8,9 +8,13 @@ public class UrlConstant {
     public static final String StudentLogin = "/login";
     public static final String StudentDelete = "/delete";
     public static final String StudentCreate = "/create";
+    public static final String StudentUpdate = "/update";
+    public static final String GetStudentDetail = "/detail";
 
     public static final String TeacherAccountRoot = "/teacherAccount";
     public static final String TeacherLogin = "/login";
     public static final String TeacherDelete = "/delete";
     public static final String TeacherCreate = "/create";
+    public static final String TeacherUpdate = "/update";
+    public static final String GetTeacherDetail = "/detail";
 }

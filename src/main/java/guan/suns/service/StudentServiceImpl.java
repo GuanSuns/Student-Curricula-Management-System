@@ -2,6 +2,7 @@ package guan.suns.service;
 
 import guan.suns.exception.PasswordErrorException;
 import guan.suns.exception.UserExistedException;
+import guan.suns.exception.UserInfoErrorException;
 import guan.suns.exception.UserNotFoundException;
 import guan.suns.model.StudentPDM;
 import guan.suns.repository.StudentRepository;
@@ -19,7 +20,7 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
 
     @Override
-    public boolean createStudent(StudentPDM student) throws UserExistedException {
+    public boolean createStudent(StudentPDM student) throws UserExistedException, UserInfoErrorException {
 
         if(student == null
                 || student.getPassword() == null
@@ -31,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
                 || student.getEnrolledAge() < 10
                 || student.getEnrolledAge() > 50
                 )
-            return false;
+            throw new UserInfoErrorException();
 
         StudentPDM newStudent = studentRepository.findOne(student.getStudentID());
         if(newStudent != null) throw new UserExistedException();
@@ -103,5 +104,35 @@ public class StudentServiceImpl implements StudentService {
         StudentPDM returnStudent = new StudentPDM(getStudent.getStudentID(),getStudent.getPassword(),getStudent.getName(),getStudent.getGender(),getStudent.getClassName(),getStudent.getDepartment(),getStudent.getEnrolledAge(),getStudent.getEnrolledTime());
 
         return returnStudent;
+    }
+
+    @Override
+    public boolean updateStudent(StudentPDM student) throws UserNotFoundException, UserInfoErrorException {
+        if(student == null
+                || student.getPassword() == null
+                || student.getPassword().equals("")
+                || student.getName() == null
+                || student.getName().equals("")
+                || student.getStudentID() == null
+                || student.getStudentID().length() != 10
+                || student.getEnrolledAge() < 10
+                || student.getEnrolledAge() > 50
+                )
+            throw new UserInfoErrorException();
+
+        StudentPDM newStudent = studentRepository.findOne(student.getStudentID());
+        if(newStudent == null) throw new UserNotFoundException();
+
+        newStudent.setClassName(student.getClassName());
+        newStudent.setEnrolledAge(student.getEnrolledAge());
+        newStudent.setGender(student.getGender());
+        newStudent.setEnrolledTime(student.getEnrolledTime());
+        newStudent.setDepartment(student.getDepartment());
+        newStudent.setPassword(student.getPassword());
+        newStudent.setName(student.getName());
+
+        studentRepository.save(newStudent);
+
+        return true;
     }
 }

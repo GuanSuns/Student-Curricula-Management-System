@@ -3,17 +3,17 @@ package guan.suns.controller.JsonProcessor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guan.suns.exception.JsonErrorException;
-import guan.suns.request.DeleteUserRequest;
+import guan.suns.request.GetUserDetailRequest;
 
 /**
- * Created by lenovo on 2016/5/24.
+ * Created by lenovo on 2016/5/29.
  */
-public class DeleteUserRequestProcessor {
+public class GetUserDetailRequestProcessor {
 
-    public DeleteUserRequest getDeleteRequest(String rawJson) throws JsonErrorException
+    public GetUserDetailRequest getDeleteRequest(String rawJson) throws JsonErrorException
     {
         ObjectMapper mapper = new ObjectMapper();
-        DeleteUserRequest request = new DeleteUserRequest();
+        GetUserDetailRequest request = new GetUserDetailRequest();
 
         try{
             JsonNode root = mapper.readTree(rawJson);
@@ -27,4 +27,5 @@ public class DeleteUserRequestProcessor {
 
         return request;
     }
+
 }

@@ -2,6 +2,7 @@ package guan.suns.service;
 
 import guan.suns.exception.PasswordErrorException;
 import guan.suns.exception.UserExistedException;
+import guan.suns.exception.UserInfoErrorException;
 import guan.suns.exception.UserNotFoundException;
 import guan.suns.model.TeacherPDM;
 
@@ -11,9 +12,11 @@ import guan.suns.model.TeacherPDM;
 public interface TeacherService {
     public TeacherPDM loginTeacher(TeacherPDM teacher) throws UserNotFoundException,PasswordErrorException;
 
-    public boolean createTeacher(TeacherPDM teacher) throws UserExistedException;
+    public boolean createTeacher(TeacherPDM teacher) throws UserExistedException, UserInfoErrorException;
 
     public boolean deleteTeacher(TeacherPDM teacher) throws UserNotFoundException;
 
     public TeacherPDM getTeacherDetail(TeacherPDM teacher) throws UserNotFoundException;
+
+    public boolean updateTeacher(TeacherPDM teacher) throws UserNotFoundException, UserInfoErrorException;
 }

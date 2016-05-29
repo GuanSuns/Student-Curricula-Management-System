@@ -5,10 +5,7 @@ import guan.suns.controller.JsonProcessor.LoginRequestProcessor;
 import guan.suns.controller.JsonProcessor.StudentJsonProcessor.CreateStudentRequestProcessor;
 import guan.suns.controller.JsonProcessor.TeacherJsonProcessor.CreateTeacherRequestProcessor;
 import guan.suns.controller.mappingUrl.UrlConstant;
-import guan.suns.exception.JsonErrorException;
-import guan.suns.exception.PasswordErrorException;
-import guan.suns.exception.UserExistedException;
-import guan.suns.exception.UserNotFoundException;
+import guan.suns.exception.*;
 import guan.suns.model.StudentPDM;
 import guan.suns.model.TeacherPDM;
 import guan.suns.request.DeleteUserRequest;
@@ -160,6 +157,12 @@ public class TeacherAccountController {
 
             return commonResponseProcessor.generateResponse(commonResponse);
         }
+        catch(UserInfoErrorException userInfoErrorException){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.UserInfoErrorException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
 
         if(isSuccess){
             commonResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
@@ -167,7 +170,76 @@ public class TeacherAccountController {
         }
         else{
             commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.CommonResponseFailDescription);
+        }
+
+        return commonResponseProcessor.generateResponse(commonResponse);
+    }
+
+    @RequestMapping(value = UrlConstant.TeacherUpdate , method = RequestMethod.POST)
+    @ResponseBody
+    public String updateTeacher(HttpServletRequest httpServletRequest){
+
+        InputStream inputStream = null;
+        CommonResponse commonResponse = new CommonResponse();
+        CommonResponseProcessor commonResponseProcessor = new CommonResponseProcessor();
+        CreateTeacherRequest createTeacherRequest = null;
+        CreateTeacherRequestProcessor createTeacherRequestProcessor = new CreateTeacherRequestProcessor();
+        TeacherPDM newTeacher = new TeacherPDM();
+        boolean isSuccess;
+
+        try{
+            inputStream = httpServletRequest.getInputStream();
+
+            if(inputStream == null){
+                commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+                commonResponse.setInfo(ResponseString.HttpServletRequestIOException);
+                return commonResponseProcessor.generateResponse(commonResponse);
+            }
+
+            String requestBody = IOUtils.toString(inputStream,"utf-8");
+            createTeacherRequest = createTeacherRequestProcessor.getCreateRequest(requestBody);
+
+            newTeacher.setDepartment(createTeacherRequest.getDepartment());
+            newTeacher.setTeacherName(createTeacherRequest.getName());
+            newTeacher.setPassword(createTeacherRequest.getPassword());
+            newTeacher.setTeacherID(createTeacherRequest.getId());
+
+            isSuccess = teacherService.updateTeacher(newTeacher);
+        }
+        catch (IOException ioException){
+            ioException.printStackTrace();
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.HttpServletRequestIOException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+        catch (JsonErrorException jsonErrorException){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.JsonProcessingErrorException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+        catch(UserInfoErrorException userInfoErrorException){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
             commonResponse.setInfo(ResponseString.UserInfoErrorException);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+        catch (UserNotFoundException userNotFoundException){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.NotFoundUpdateUserDescription);
+
+            return commonResponseProcessor.generateResponse(commonResponse);
+        }
+
+        if(isSuccess){
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
+            commonResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
+        }
+        else{
+            commonResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            commonResponse.setInfo(ResponseString.CommonResponseFailDescription);
         }
 
         return commonResponseProcessor.generateResponse(commonResponse);
@@ -233,4 +305,6 @@ public class TeacherAccountController {
 
         return commonResponseProcessor.generateResponse(commonResponse);
     }
+
+
 }

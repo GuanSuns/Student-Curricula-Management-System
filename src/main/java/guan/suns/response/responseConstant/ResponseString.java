@@ -18,12 +18,18 @@ public class ResponseString {
 
     public static final String CreateUserExistedException = "Exception: User Existed While Creating";
     public static final String UserInfoErrorException = "Exception: User Info Error";
+    public static final String NotFoundUpdateUserDescription = "Exception: Fail To Update User, User Not Found";
 
     public static final String DeleteUserNotFoundException = "Exception: User Not Found";
     public static final String FailToDeleteStudentDescription = "Exception: Fail To Delete Student";
     public static final String FailToDeleteTeacherDescription = "Exception: Fail To Delete Teacher";
 
-    public static final String NotFoundUpdateUserDescription = "Exception: Fail To Update User, User Not Found";
+
+    public static final String CourseExistedExceptionDescription = "Exception: Course Existed";
+    public static final String CourseNotFoundExceptionDescription = "Exception: Course Not Found";
+    public static final String CourseTeacherNotFoundExceptionDescription = "Exception: Teacher Not Found";
+    public static final String CourseInfoErrorExceptionDescription = "Exception: Course Info Error";
+
 
 
 }

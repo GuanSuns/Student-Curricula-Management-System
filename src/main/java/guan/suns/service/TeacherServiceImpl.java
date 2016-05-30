@@ -81,12 +81,12 @@ public class TeacherServiceImpl implements TeacherService{
     }
 
     @Override
-    public TeacherPDM getTeacherDetail(TeacherPDM teacher) throws UserNotFoundException {
+    public TeacherPDM getTeacherDetail(TeacherPDM teacher) throws UserNotFoundException, UserInfoErrorException {
         if(teacher == null
                 || teacher.getTeacherID() == null
                 || teacher.getTeacherID().length() != 5
                 ){
-            throw new UserNotFoundException();
+            throw new UserInfoErrorException();
         }
 
         TeacherPDM getTeacher = teacherRepository.findOne(teacher.getTeacherID());

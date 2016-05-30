@@ -380,18 +380,29 @@ public class StudentAccountController {
             return studentDetailResponseProcessor.generateResponse(studentDetailResponse);
         }
         catch (JsonErrorException jsonErrorException){
-            jsonErrorException.printStackTrace();
 
+            jsonErrorException.printStackTrace();
             studentDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
             studentDetailResponse.setInfo(ResponseString.JsonProcessingErrorException);
 
             return studentDetailResponseProcessor.generateResponse(studentDetailResponse);
         }
         catch (UserNotFoundException userNotFoundException){
+
+            userNotFoundException.printStackTrace();
             studentDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
             studentDetailResponse.setInfo(ResponseString.CommonResponseUserNotFoundDescription);
 
             return studentDetailResponseProcessor.generateResponse(studentDetailResponse);
+        }
+        catch (UserInfoErrorException userInfoErrorException){
+
+            userInfoErrorException.printStackTrace();
+            studentDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            studentDetailResponse.setInfo(ResponseString.UserInfoErrorException);
+
+            return studentDetailResponseProcessor.generateResponse(studentDetailResponse);
+
         }
 
 

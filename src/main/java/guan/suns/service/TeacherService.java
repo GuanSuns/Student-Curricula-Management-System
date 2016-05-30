@@ -16,7 +16,7 @@ public interface TeacherService {
 
     public boolean deleteTeacher(TeacherPDM teacher) throws UserNotFoundException;
 
-    public TeacherPDM getTeacherDetail(TeacherPDM teacher) throws UserNotFoundException;
+    public TeacherPDM getTeacherDetail(TeacherPDM teacher) throws UserNotFoundException, UserInfoErrorException;
 
     public boolean updateTeacher(TeacherPDM teacher) throws UserNotFoundException, UserInfoErrorException;
 }

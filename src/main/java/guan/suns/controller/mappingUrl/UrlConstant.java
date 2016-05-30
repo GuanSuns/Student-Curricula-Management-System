@@ -17,4 +17,13 @@ public class UrlConstant {
     public static final String TeacherCreate = "/create";
     public static final String TeacherUpdate = "/update";
     public static final String GetTeacherDetail = "/detail";
+
+    public static final String TeacherCourseRoot = "/teacherCourse";
+    public static final String TeacherCreateCourse = "/create";
+    public static final String TeacherDeleteCourse = "/delete";
+    public static final String TeacherUpdateCourse = "/update";
+    public static final String GetCourseDetail = "/detail";
+    public static final String InsertGrade = "/insertGrade";
+    public static final String UpdateGrade = "/updateGrade";
+
 }

@@ -86,13 +86,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentPDM getStudentDetail(StudentPDM student) throws UserNotFoundException {
+    public StudentPDM getStudentDetail(StudentPDM student) throws UserNotFoundException, UserInfoErrorException {
 
         if(student == null
                 || student.getStudentID() == null
                 || student.getStudentID().length() != 10
                 ){
-            throw new UserNotFoundException();
+            throw new UserInfoErrorException();
         }
 
         StudentPDM getStudent = studentRepository.findOne(student.getStudentID());

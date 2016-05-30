@@ -6,6 +6,8 @@ import guan.suns.basicClass.Grade;
 import guan.suns.exception.JsonErrorException;
 import guan.suns.request.TeacherRequest.CreateCourseRequest;
 
+import java.sql.Timestamp;
+
 /**
  * Created by lenovo on 2016/5/29.
  */
@@ -23,6 +25,7 @@ public class CreateCourseRequestProcessor {
             request.setSuitableGrade(Grade.values()[root.path("suitableGrade").asInt()]);
             request.setCourseID(root.path("courseName").asText());
             request.setCredit(root.path("credit").asInt());
+            request.setExpiredDate(new Timestamp(root.path("expiredDate").asLong()));
         }
         catch (Exception e)
         {

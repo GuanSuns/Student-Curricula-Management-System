@@ -23,7 +23,7 @@ public class UrlConstant {
     public static final String TeacherDeleteCourse = "/delete";
     public static final String TeacherUpdateCourse = "/update";
     public static final String GetCourseDetail = "/detail";
-    public static final String InsertGrade = "/insertGrade";
-    public static final String UpdateGrade = "/updateGrade";
+    public static final String InsertScore = "/insertScore";
+    public static final String UpdateScore = "/updateScore";
 
 }

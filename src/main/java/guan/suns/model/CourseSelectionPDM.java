@@ -1,8 +1,9 @@
 package guan.suns.model;
 
-import com.sun.jmx.snmp.Timestamp;
+
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * Created by lenovo on 2016/5/5.

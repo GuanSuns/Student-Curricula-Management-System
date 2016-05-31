@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  */
 public class SelectCourseRequestProcessor {
 
-    public SelectCourseRequest getCreateRequest(String rawJson) throws JsonErrorException
+    public SelectCourseRequest getRequest(String rawJson) throws JsonErrorException
     {
         ObjectMapper mapper = new ObjectMapper();
         SelectCourseRequest request = new SelectCourseRequest();

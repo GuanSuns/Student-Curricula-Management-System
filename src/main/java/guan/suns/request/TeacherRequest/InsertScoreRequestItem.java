@@ -1,6 +1,7 @@
 package guan.suns.request.TeacherRequest;
 
-import com.sun.jmx.snmp.Timestamp;
+
+import java.sql.Timestamp;
 
 /**
  * Created by lenovo on 2016/5/30.

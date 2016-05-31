@@ -24,11 +24,13 @@ public class ResponseString {
     public static final String FailToDeleteStudentDescription = "Exception: Fail To Delete Student";
     public static final String FailToDeleteTeacherDescription = "Exception: Fail To Delete Teacher";
 
-
     public static final String CourseExistedExceptionDescription = "Exception: Course Existed";
     public static final String CourseNotFoundExceptionDescription = "Exception: Course Not Found";
     public static final String CourseTeacherNotFoundExceptionDescription = "Exception: Teacher Not Found";
     public static final String CourseInfoErrorExceptionDescription = "Exception: Course Info Error";
+
+    public static final String CourseSelectionExisted = "Exception: Course Has Been Selected";
+    public static final String CourseSelectionInfoError = "Exception: Course Selection Info Error";
 
 
 

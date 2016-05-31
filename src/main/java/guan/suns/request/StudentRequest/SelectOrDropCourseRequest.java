@@ -3,14 +3,14 @@ package guan.suns.request.StudentRequest;
 /**
  * Created by lenovo on 2016/5/31.
  */
-public class SelectCourseRequest {
+public class SelectOrDropCourseRequest {
     private String studentID;
     private String courseID;
 
-    public SelectCourseRequest() {
+    public SelectOrDropCourseRequest() {
     }
 
-    public SelectCourseRequest(String studentID, String courseID) {
+    public SelectOrDropCourseRequest(String studentID, String courseID) {
         this.studentID = studentID;
         this.courseID = courseID;
     }

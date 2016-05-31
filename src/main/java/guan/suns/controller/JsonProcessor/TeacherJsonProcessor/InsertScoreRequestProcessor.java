@@ -2,7 +2,7 @@ package guan.suns.controller.JsonProcessor.TeacherJsonProcessor;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jmx.snmp.Timestamp;
+import java.sql.Timestamp;
 import guan.suns.exception.JsonErrorException;
 import guan.suns.request.TeacherRequest.InsertScoreRequest;
 import guan.suns.request.TeacherRequest.InsertScoreRequestItem;

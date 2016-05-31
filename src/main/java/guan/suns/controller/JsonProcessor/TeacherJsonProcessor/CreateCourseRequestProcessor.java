@@ -25,7 +25,14 @@ public class CreateCourseRequestProcessor {
             request.setSuitableGrade(Grade.values()[root.path("suitableGrade").asInt()]);
             request.setCourseID(root.path("courseName").asText());
             request.setCredit(root.path("credit").asInt());
-            request.setExpiredDate(new Timestamp(root.path("expiredDate").asLong()));
+
+            String strDate = root.path("expiredDate").asText();
+            if(strDate.equals("")) {
+                request.setExpiredDate(null);
+            }
+            else{
+                request.setExpiredDate(new Timestamp(root.path("expiredDate").asLong()));
+            }
         }
         catch (Exception e)
         {

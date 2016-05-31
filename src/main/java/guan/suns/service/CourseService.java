@@ -16,9 +16,11 @@ public interface CourseService {
 
     public CoursePDM getCourseDetail(CoursePDM course) throws CourseInfoErrorException, CourseNotFoundException;
 
-    public boolean insertScore(CourseSelectionPDM courseSelection) throws CourseNotSelectedException, UserNotFoundException;
+    public boolean teacherInsertScore(CourseSelectionPDM courseSelection) throws CourseNotSelectedException, TeacherCannotModifyScoreException;
 
-    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError;
+    public boolean administratorInsertScore(CourseSelectionPDM courseSelection) throws CourseNotSelectedException;
+
+    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError, StudentCanNotSelectCourseException;
 
     public boolean dropCourse(CourseSelectionPDM courseSelection) throws CourseNotSelectedException, CourseSelectionInfoError;
 }

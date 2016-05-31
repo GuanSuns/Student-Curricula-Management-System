@@ -3,19 +3,17 @@ package guan.suns.controller.JsonProcessor.StudentJsonProcessor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guan.suns.exception.JsonErrorException;
-import guan.suns.request.StudentRequest.SelectCourseRequest;
-
-import java.sql.Timestamp;
+import guan.suns.request.StudentRequest.SelectOrDropCourseRequest;
 
 /**
  * Created by lenovo on 2016/5/31.
  */
-public class SelectCourseRequestProcessor {
+public class SelectOrDropCourseRequestProcessor {
 
-    public SelectCourseRequest getRequest(String rawJson) throws JsonErrorException
+    public SelectOrDropCourseRequest getRequest(String rawJson) throws JsonErrorException
     {
         ObjectMapper mapper = new ObjectMapper();
-        SelectCourseRequest request = new SelectCourseRequest();
+        SelectOrDropCourseRequest request = new SelectOrDropCourseRequest();
 
         try{
             JsonNode root = mapper.readTree(rawJson);

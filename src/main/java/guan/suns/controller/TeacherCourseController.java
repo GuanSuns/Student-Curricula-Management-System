@@ -407,7 +407,7 @@ public class TeacherCourseController {
         return courseDetailResponseProcessor.generateResponse(courseDetailResponse);
     }
 
-    @RequestMapping(value = UrlConstant.InsertScore , method = RequestMethod.POST)
+    @RequestMapping(value = UrlConstant.TeacherInsertScore , method = RequestMethod.POST)
     @ResponseBody
     public String insertScore(HttpServletRequest httpServletRequest){
 
@@ -457,7 +457,7 @@ public class TeacherCourseController {
                 StudentPDM student = studentService.getStudentDetail(new StudentPDM(scoreItem.getStudentID(),"","",null,"",null,null,null));
                 CoursePDM course = courseService.getCourseDetail(new CoursePDM(scoreItem.getCourseID(),"",null,null,null,null));
 
-                boolean isSuccess = courseService.insertScore(new CourseSelectionPDM(new CourseSelectionCompositeId(student,course),course.getTeacherID(),scoreItem.getScore(),scoreItem.getSelectYear()));
+                boolean isSuccess = courseService.teacherInsertScore(new CourseSelectionPDM(new CourseSelectionCompositeId(student,course),course.getTeacherID(),scoreItem.getScore(),scoreItem.getSelectYear()));
 
                 if(isSuccess) cntSuccess++;
 
@@ -476,6 +476,9 @@ public class TeacherCourseController {
             }
             catch (CourseNotSelectedException courseNotSelectedException){
                 courseNotSelectedException.printStackTrace();
+            }
+            catch (TeacherCannotModifyScoreException teacherCannotModifyScoreException){
+                teacherCannotModifyScoreException.printStackTrace();
             }
         }
 

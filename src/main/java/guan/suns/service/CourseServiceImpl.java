@@ -10,6 +10,9 @@ import guan.suns.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by lenovo on 2016/5/28.
  */
@@ -125,8 +128,33 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean insertScore(CourseSelectionPDM courseSelection) throws CourseNotSelectedException {
+    public boolean teacherInsertScore(CourseSelectionPDM courseSelection) throws CourseNotSelectedException, TeacherCannotModifyScoreException {
 
+        if(courseSelection == null
+                || courseSelection.getTeacherID() == null
+                || courseSelection.getCourseSelectionCompositeId() == null
+                || courseSelection.getCourseSelectionCompositeId().getCourseID() == null
+                || courseSelection.getCourseSelectionCompositeId().getStudentID()== null
+                ){
+            throw new CourseNotSelectedException();
+        }
+
+        CourseSelectionPDM courseScore = courseSelectionRepository.findOne(courseSelection.getCourseSelectionCompositeId());
+        if( courseScore == null ) {
+            throw new CourseNotSelectedException();
+        }
+        if( courseScore.getScore() != 0F) {
+            throw new TeacherCannotModifyScoreException();
+        }
+
+        courseScore.setScore(courseSelection.getScore());
+        courseScore.setSelectYear(courseSelection.getSelectYear());
+
+        return true;
+    }
+
+    @Override
+    public boolean administratorInsertScore(CourseSelectionPDM courseSelection) throws CourseNotSelectedException {
         if(courseSelection == null
                 || courseSelection.getTeacherID() == null
                 || courseSelection.getCourseSelectionCompositeId() == null
@@ -148,12 +176,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError {
+    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError,StudentCanNotSelectCourseException {
         if(courseSelection == null
                 || courseSelection.getTeacherID() == null
                 || courseSelection.getCourseSelectionCompositeId() == null
                 || courseSelection.getCourseSelectionCompositeId().getCourseID() == null
                 || courseSelection.getCourseSelectionCompositeId().getStudentID()== null
+                || courseSelection.getScore() != 0F
                 ){
             throw new CourseSelectionInfoError();
         }
@@ -162,6 +191,14 @@ public class CourseServiceImpl implements CourseService {
         if( courseScore != null ) {
             throw new CourseSelectionExistedException();
         }
+
+
+        Date studentEnrollTime = courseSelection.getCourseSelectionCompositeId().getStudentID().getEnrolledTime();
+        Calendar studentEnrollCalendar = Calendar.getInstance();
+        studentEnrollCalendar.setTime(studentEnrollTime);
+        Calendar currentYear = Calendar.getInstance();
+        currentYear.setTime(new Date());
+        int studentEnrollYear = studentEnrollCalendar.get(Calendar.YEAR);
 
         courseSelectionRepository.save(courseSelection);
 

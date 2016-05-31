@@ -28,9 +28,12 @@ public class ResponseString {
     public static final String CourseNotFoundExceptionDescription = "Exception: Course Not Found";
     public static final String CourseTeacherNotFoundExceptionDescription = "Exception: Teacher Not Found";
     public static final String CourseInfoErrorExceptionDescription = "Exception: Course Info Error";
+    public static final String TeacherCannotModifyScoreDescription = "Exception: Teacher Can Not Modify Existed Score";
 
     public static final String CourseSelectionExisted = "Exception: Course Has Been Selected";
+    public static final String CourseNotSelectedDescription = "Exception: Course Not Selected";
     public static final String CourseSelectionInfoError = "Exception: Course Selection Info Error";
+    public static final String StudentCanNotSelectCourseDescription = "Exception: Student Can Not Select This Course";
 
 
 

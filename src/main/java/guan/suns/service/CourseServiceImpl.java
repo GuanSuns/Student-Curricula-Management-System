@@ -1,12 +1,11 @@
 package guan.suns.service;
 
-import guan.suns.exception.CourseExistedException;
-import guan.suns.exception.CourseInfoErrorException;
-import guan.suns.exception.CourseNotFoundException;
-import guan.suns.exception.TeacherNotExistedException;
+import guan.suns.exception.*;
 import guan.suns.model.CoursePDM;
+import guan.suns.model.CourseSelectionPDM;
 import guan.suns.model.TeacherPDM;
 import guan.suns.repository.CourseRepository;
+import guan.suns.repository.CourseSelectionRepository;
 import guan.suns.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,8 @@ public class CourseServiceImpl implements CourseService {
     private CourseRepository courseRepository;
     @Autowired
     private TeacherRepository teacherRepository;
+    @Autowired
+    private CourseSelectionRepository courseSelectionRepository;
 
     @Override
     public boolean createCourse(CoursePDM course) throws CourseExistedException, CourseInfoErrorException, TeacherNotExistedException {
@@ -123,4 +124,68 @@ public class CourseServiceImpl implements CourseService {
         return returnCourse;
     }
 
+    @Override
+    public boolean insertScore(CourseSelectionPDM courseSelection) throws CourseNotSelectedException {
+
+        if(courseSelection == null
+                || courseSelection.getTeacherID() == null
+                || courseSelection.getCourseSelectionCompositeId() == null
+                || courseSelection.getCourseSelectionCompositeId().getCourseID() == null
+                || courseSelection.getCourseSelectionCompositeId().getStudentID()== null
+                ){
+            throw new CourseNotSelectedException();
+        }
+
+        CourseSelectionPDM courseScore = courseSelectionRepository.findOne(courseSelection.getCourseSelectionCompositeId());
+        if( courseScore == null ) {
+            throw new CourseNotSelectedException();
+        }
+
+        courseScore.setScore(courseSelection.getScore());
+        courseScore.setSelectYear(courseSelection.getSelectYear());
+
+        return true;
+    }
+
+    @Override
+    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError {
+        if(courseSelection == null
+                || courseSelection.getTeacherID() == null
+                || courseSelection.getCourseSelectionCompositeId() == null
+                || courseSelection.getCourseSelectionCompositeId().getCourseID() == null
+                || courseSelection.getCourseSelectionCompositeId().getStudentID()== null
+                ){
+            throw new CourseSelectionInfoError();
+        }
+
+        CourseSelectionPDM courseScore = courseSelectionRepository.findOne(courseSelection.getCourseSelectionCompositeId());
+        if( courseScore != null ) {
+            throw new CourseSelectionExistedException();
+        }
+
+        courseSelectionRepository.save(courseSelection);
+
+        return true;
+    }
+
+    @Override
+    public boolean dropCourse(CourseSelectionPDM courseSelection) throws CourseNotSelectedException, CourseSelectionInfoError {
+        if(courseSelection == null
+                || courseSelection.getTeacherID() == null
+                || courseSelection.getCourseSelectionCompositeId() == null
+                || courseSelection.getCourseSelectionCompositeId().getCourseID() == null
+                || courseSelection.getCourseSelectionCompositeId().getStudentID()== null
+                ){
+            throw new CourseSelectionInfoError();
+        }
+
+        CourseSelectionPDM courseScore = courseSelectionRepository.findOne(courseSelection.getCourseSelectionCompositeId());
+        if( courseScore == null ) {
+            throw new CourseNotSelectedException();
+        }
+
+        courseSelectionRepository.delete(courseScore);
+
+        return true;
+    }
 }

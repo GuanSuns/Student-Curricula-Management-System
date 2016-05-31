@@ -1,10 +1,8 @@
 package guan.suns.service;
 
-import guan.suns.exception.CourseExistedException;
-import guan.suns.exception.CourseInfoErrorException;
-import guan.suns.exception.CourseNotFoundException;
-import guan.suns.exception.TeacherNotExistedException;
+import guan.suns.exception.*;
 import guan.suns.model.CoursePDM;
+import guan.suns.model.CourseSelectionPDM;
 
 /**
  * Created by lenovo on 2016/5/28.
@@ -17,4 +15,10 @@ public interface CourseService {
     public boolean deleteCourse(CoursePDM course) throws CourseInfoErrorException, CourseNotFoundException;
 
     public CoursePDM getCourseDetail(CoursePDM course) throws CourseInfoErrorException, CourseNotFoundException;
+
+    public boolean insertScore(CourseSelectionPDM courseSelection) throws CourseNotSelectedException, UserNotFoundException;
+
+    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError;
+
+    public boolean dropCourse(CourseSelectionPDM courseSelection) throws CourseNotSelectedException, CourseSelectionInfoError;
 }

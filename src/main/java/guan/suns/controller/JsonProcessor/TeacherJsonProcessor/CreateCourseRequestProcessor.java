@@ -23,7 +23,7 @@ public class CreateCourseRequestProcessor {
             request.setTeacherID(root.path("teacherID").asText());
             request.setCourseName(root.path("courseName").asText());
             request.setSuitableGrade(Grade.values()[root.path("suitableGrade").asInt()]);
-            request.setCourseID(root.path("courseName").asText());
+            request.setCourseID(root.path("courseID").asText());
             request.setCredit(root.path("credit").asInt());
 
             String strDate = root.path("expiredDate").asText();

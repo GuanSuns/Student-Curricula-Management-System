@@ -20,6 +20,7 @@ public class TeacherPDM {
     @Column(name = "teacherName")
     private String teacherName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "teacherDepartment")
     private Department department;
 

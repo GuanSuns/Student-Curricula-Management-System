@@ -192,7 +192,6 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseSelectionExistedException();
         }
 
-
         Date studentEnrollTime = courseSelection.getCourseSelectionCompositeId().getStudentID().getEnrolledTime();
         Calendar studentEnrollCalendar = Calendar.getInstance();
         studentEnrollCalendar.setTime(studentEnrollTime);
@@ -201,8 +200,20 @@ public class CourseServiceImpl implements CourseService {
         int studentEnrollYear = studentEnrollCalendar.get(Calendar.YEAR);
         int studentEnrollMonth = studentEnrollCalendar.get(Calendar.MONTH);
         int currentYear = currentCalendar.get(Calendar.YEAR);
-        int currentMonth = currentCalendar.get(Calendar.MONTH);
+        int currentMonth = currentCalendar.get(Calendar.MONTH) + 1;
         int intGrade = 0;
+
+        System.out.println("studentEnrollMonth:"+studentEnrollMonth+" currentMonth: "+currentMonth);
+
+        if(courseSelection.getCourseSelectionCompositeId().getCourseID().getExpiredDate()!=null){
+            Date courseExpiredDate = courseSelection.getCourseSelectionCompositeId().getCourseID().getExpiredDate();
+            Calendar courseExpiredCalendar = Calendar.getInstance();
+            courseExpiredCalendar.setTime(courseExpiredDate);
+
+            if(currentCalendar.after(courseExpiredCalendar)){
+                throw new StudentCanNotSelectCourseException();
+            }
+        }
 
         if(studentEnrollMonth < 9 ){
             studentEnrollYear--;

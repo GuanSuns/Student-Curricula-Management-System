@@ -33,6 +33,7 @@ public class StudentPDM {
     @Column(name = "className")
     private String className;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "department")
     private Department department;
 

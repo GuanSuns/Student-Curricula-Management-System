@@ -20,7 +20,7 @@ public interface CourseService {
 
     public boolean administratorInsertScore(CourseSelectionPDM courseSelection) throws CourseNotSelectedException;
 
-    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError, StudentCanNotSelectCourseException;
+    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError, StudentCanNotSelectCourseException, UserInfoErrorException;
 
     public boolean dropCourse(CourseSelectionPDM courseSelection) throws CourseNotSelectedException, CourseSelectionInfoError;
 }

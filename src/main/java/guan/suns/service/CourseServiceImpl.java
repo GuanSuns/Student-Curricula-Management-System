@@ -176,7 +176,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError,StudentCanNotSelectCourseException {
+    public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError,StudentCanNotSelectCourseException, UserInfoErrorException {
         if(courseSelection == null
                 || courseSelection.getTeacherID() == null
                 || courseSelection.getCourseSelectionCompositeId() == null
@@ -196,9 +196,32 @@ public class CourseServiceImpl implements CourseService {
         Date studentEnrollTime = courseSelection.getCourseSelectionCompositeId().getStudentID().getEnrolledTime();
         Calendar studentEnrollCalendar = Calendar.getInstance();
         studentEnrollCalendar.setTime(studentEnrollTime);
-        Calendar currentYear = Calendar.getInstance();
-        currentYear.setTime(new Date());
+        Calendar currentCalendar = Calendar.getInstance();
+        currentCalendar.setTime(new Date());
         int studentEnrollYear = studentEnrollCalendar.get(Calendar.YEAR);
+        int studentEnrollMonth = studentEnrollCalendar.get(Calendar.MONTH);
+        int currentYear = currentCalendar.get(Calendar.YEAR);
+        int currentMonth = currentCalendar.get(Calendar.MONTH);
+        int intGrade = 0;
+
+        if(studentEnrollMonth < 9 ){
+            studentEnrollYear--;
+        }
+
+        if(currentMonth < 9){
+            intGrade = currentYear - studentEnrollYear - 1;
+        }
+        else{
+            intGrade = currentYear - studentEnrollYear;
+        }
+
+        if(intGrade < 0) {
+            throw new UserInfoErrorException();
+        }
+
+        if(intGrade < courseSelection.getCourseSelectionCompositeId().getCourseID().getSuitableGrade().ordinal()){
+            throw new StudentCanNotSelectCourseException();
+        }
 
         courseSelectionRepository.save(courseSelection);
 

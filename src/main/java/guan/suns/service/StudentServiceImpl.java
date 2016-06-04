@@ -102,6 +102,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         StudentPDM returnStudent = new StudentPDM(getStudent.getStudentID(),getStudent.getPassword(),getStudent.getName(),getStudent.getGender(),getStudent.getClassName(),getStudent.getDepartment(),getStudent.getEnrolledAge(),getStudent.getEnrolledTime());
+        returnStudent.setSelectedCourses(getStudent.getSelectedCourses());
 
         return returnStudent;
     }

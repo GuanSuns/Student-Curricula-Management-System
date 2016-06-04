@@ -44,7 +44,7 @@ public class StudentPDM {
     @Column(name = "enrolledTime")
     private Timestamp enrolledTime;
 
-    @OneToMany(fetch=FetchType.LAZY,cascade={CascadeType.REMOVE, CascadeType.MERGE})
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE})
     @JoinColumn(name = "studentID", referencedColumnName = "studentID")
     private Set<CourseSelectionPDM> selectedCourses = new HashSet<CourseSelectionPDM>();
 

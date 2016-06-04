@@ -143,12 +143,14 @@ public class CourseServiceImpl implements CourseService {
         if( courseScore == null ) {
             throw new CourseNotSelectedException();
         }
-        if( courseScore.getScore() != 0F) {
+        if( courseScore.getScore() != 0) {
             throw new TeacherCannotModifyScoreException();
         }
 
         courseScore.setScore(courseSelection.getScore());
         courseScore.setSelectYear(courseSelection.getSelectYear());
+
+        courseSelectionRepository.save(courseScore);
 
         return true;
     }
@@ -187,8 +189,9 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseSelectionInfoError();
         }
 
-        CourseSelectionPDM courseScore = courseSelectionRepository.findOne(courseSelection.getCourseSelectionCompositeId());
+        CourseSelectionPDM courseScore = courseSelectionRepository.findByCourseSelectionCompositeIdStudentIDAndCourseSelectionCompositeIdCourseID(courseSelection.getCourseSelectionCompositeId().getStudentID(),courseSelection.getCourseSelectionCompositeId().getCourseID());
         if( courseScore != null ) {
+            //System.out.println("Test");
             throw new CourseSelectionExistedException();
         }
 
@@ -203,7 +206,7 @@ public class CourseServiceImpl implements CourseService {
         int currentMonth = currentCalendar.get(Calendar.MONTH) + 1;
         int intGrade = 0;
 
-        System.out.println("studentEnrollMonth:"+studentEnrollMonth+" currentMonth: "+currentMonth);
+        //System.out.println("studentEnrollMonth:"+studentEnrollMonth+" currentMonth: "+currentMonth);
 
         if(courseSelection.getCourseSelectionCompositeId().getCourseID().getExpiredDate()!=null){
             Date courseExpiredDate = courseSelection.getCourseSelectionCompositeId().getCourseID().getExpiredDate();
@@ -211,6 +214,7 @@ public class CourseServiceImpl implements CourseService {
             courseExpiredCalendar.setTime(courseExpiredDate);
 
             if(currentCalendar.after(courseExpiredCalendar)){
+
                 throw new StudentCanNotSelectCourseException();
             }
         }
@@ -250,7 +254,7 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseSelectionInfoError();
         }
 
-        CourseSelectionPDM courseScore = courseSelectionRepository.findOne(courseSelection.getCourseSelectionCompositeId());
+        CourseSelectionPDM courseScore = courseSelectionRepository.findByCourseSelectionCompositeIdStudentIDAndCourseSelectionCompositeIdCourseID(courseSelection.getCourseSelectionCompositeId().getStudentID(),courseSelection.getCourseSelectionCompositeId().getCourseID());
         if( courseScore == null ) {
             throw new CourseNotSelectedException();
         }

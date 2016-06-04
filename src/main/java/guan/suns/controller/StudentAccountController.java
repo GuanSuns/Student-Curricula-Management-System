@@ -365,6 +365,8 @@ public class StudentAccountController {
                 studentAttendClassItem.setTeacherID(courseItem.getTeacherID().getTeacherID());
                 studentAttendClassItem.setTeacherName(courseItem.getTeacherID().getTeacherName());
 
+                //System.out.println(courseItem);
+
                 classes.add(studentAttendClassItem);
             }
 

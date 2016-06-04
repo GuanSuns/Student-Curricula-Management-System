@@ -13,14 +13,14 @@ public class CreateCourseRequest {
     private String courseID;
     private String courseName;
     private String teacherID;
-    private Integer credit;
+    private Float credit;
     private Timestamp expiredDate;
     private Grade suitableGrade;
 
     public CreateCourseRequest() {
     }
 
-    public CreateCourseRequest(String courseID, String courseName, String teacherID, Integer credit, Timestamp expiredDate, Grade suitableGrade) {
+    public CreateCourseRequest(String courseID, String courseName, String teacherID, Float credit, Timestamp expiredDate, Grade suitableGrade) {
         this.courseID = courseID;
         this.courseName = courseName;
         this.teacherID = teacherID;
@@ -53,11 +53,11 @@ public class CreateCourseRequest {
         this.teacherID = teacherID;
     }
 
-    public Integer getCredit() {
+    public Float getCredit() {
         return credit;
     }
 
-    public void setCredit(Integer credit) {
+    public void setCredit(Float credit) {
         this.credit = credit;
     }
 

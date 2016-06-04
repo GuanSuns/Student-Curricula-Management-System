@@ -96,6 +96,7 @@ public class TeacherServiceImpl implements TeacherService{
         }
 
         TeacherPDM returnTeacher = new TeacherPDM(getTeacher.getTeacherID(),getTeacher.getTeacherName(),getTeacher.getDepartment(),getTeacher.getPassword());
+        returnTeacher.setCourses(getTeacher.getCourses());
 
         return returnTeacher;
     }

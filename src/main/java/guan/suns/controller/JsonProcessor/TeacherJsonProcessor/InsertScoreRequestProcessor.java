@@ -31,7 +31,7 @@ public class InsertScoreRequestProcessor {
 
                     InsertScoreRequestItem scoreItem = new InsertScoreRequestItem();
                     scoreItem.setCourseID(data.path("courseID").asText());
-                    scoreItem.setScore((float)data.path("score").asDouble());
+                    scoreItem.setScore(Float.valueOf(data.path("score").asText()));
                     scoreItem.setSelectYear(new Timestamp(data.path("selectYear").asLong()));
                     scoreItem.setStudentID(data.path("studentID").asText());
 

@@ -26,7 +26,7 @@ public class CoursePDM {
     private TeacherPDM teacherID;
 
     @Column(name = "credit")
-    private Integer credit;
+    private Float credit;
 
     @Column(name = "expiredDate", nullable = true)
     private Timestamp expiredDate;
@@ -43,7 +43,7 @@ public class CoursePDM {
     public CoursePDM() {
     }
 
-    public CoursePDM(String courseID, String courseName, TeacherPDM teacherID, Integer credit, Timestamp expiredDate, Grade suitableGrade) {
+    public CoursePDM(String courseID, String courseName, TeacherPDM teacherID, Float credit, Timestamp expiredDate, Grade suitableGrade) {
         this.courseID = courseID;
         this.courseName = courseName;
         this.teacherID = teacherID;
@@ -84,11 +84,11 @@ public class CoursePDM {
         this.teacherID = teacherID;
     }
 
-    public Integer getCredit() {
+    public Float getCredit() {
         return credit;
     }
 
-    public void setCredit(Integer credit) {
+    public void setCredit(Float credit) {
         this.credit = credit;
     }
 

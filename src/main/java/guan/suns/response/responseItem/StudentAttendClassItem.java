@@ -7,7 +7,7 @@ public class StudentAttendClassItem {
 
     private String courseID;
     private String courseName;
-    private Integer credit;
+    private Float credit;
     private Float score;
     private String teacherID;
     private String teacherName;
@@ -16,7 +16,7 @@ public class StudentAttendClassItem {
     public StudentAttendClassItem() {
     }
 
-    public StudentAttendClassItem(String courseID, String courseName, Integer credit, Float score, String teacherID, String teacherName, Integer department) {
+    public StudentAttendClassItem(String courseID, String courseName, Float credit, Float score, String teacherID, String teacherName, Integer department) {
         this.courseID = courseID;
         this.courseName = courseName;
         this.credit = credit;
@@ -42,11 +42,11 @@ public class StudentAttendClassItem {
         this.courseName = courseName;
     }
 
-    public Integer getCredit() {
+    public Float getCredit() {
         return credit;
     }
 
-    public void setCredit(Integer credit) {
+    public void setCredit(Float credit) {
         this.credit = credit;
     }
 

@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "course_selection_table")
 public class CourseSelectionPDM {
-    @Id
+    @EmbeddedId
     private CourseSelectionCompositeId courseSelectionCompositeId;
 
     @ManyToOne( fetch = FetchType.EAGER )

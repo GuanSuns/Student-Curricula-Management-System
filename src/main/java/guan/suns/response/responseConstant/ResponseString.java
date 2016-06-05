@@ -35,6 +35,8 @@ public class ResponseString {
     public static final String CourseSelectionInfoError = "Exception: Course Selection Info Error";
     public static final String StudentCanNotSelectCourseDescription = "Exception: Student Can Not Select This Course";
 
+    public static final String GetStudentsDetailsByNameOrDepartmentOrClassNameQueryInfoError = "Exception: Query Info Error";
+
 
 
 }

@@ -1,13 +1,12 @@
 package guan.suns.service;
 
-import guan.suns.exception.PasswordErrorException;
-import guan.suns.exception.UserExistedException;
-import guan.suns.exception.UserInfoErrorException;
-import guan.suns.exception.UserNotFoundException;
+import guan.suns.exception.*;
 import guan.suns.model.StudentPDM;
 import guan.suns.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 /**
  * Created by lenovo on 2016/5/9.
@@ -135,5 +134,80 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.save(newStudent);
 
         return true;
+    }
+
+    @Override
+    public ArrayList<StudentPDM> getStudentDetailByName(StudentPDM student) throws QueryInfoError {
+        if(student == null
+                || student.getName()==null
+                )
+            throw new QueryInfoError();
+
+        return studentRepository.findByName(student.getName());
+    }
+
+    @Override
+    public ArrayList<StudentPDM> getStudentDetailByDepartment(StudentPDM student) throws QueryInfoError {
+        if(student == null
+                || student.getDepartment()==null
+                )
+            throw new QueryInfoError();
+
+        return studentRepository.findByDepartment(student.getDepartment());
+    }
+
+    @Override
+    public ArrayList<StudentPDM> getStudentDetailByClassName(StudentPDM student) throws QueryInfoError {
+        if(student == null
+                || student.getClassName()==null
+                )
+            throw new QueryInfoError();
+
+        return studentRepository.findByClassName(student.getClassName());
+    }
+
+    @Override
+    public ArrayList<StudentPDM> getStudentDetailByNameAndDepartment(StudentPDM student) throws QueryInfoError {
+        if(student == null
+                || student.getName()==null
+                || student.getDepartment() == null
+                )
+            throw new QueryInfoError();
+
+        return studentRepository.findByNameAndDepartment(student.getName(),student.getDepartment());
+    }
+
+    @Override
+    public ArrayList<StudentPDM> getStudentDetailByNameAndClassName(StudentPDM student) throws QueryInfoError {
+        if(student == null
+                || student.getName()==null
+                || student.getClassName() == null
+                )
+            throw new QueryInfoError();
+
+        return studentRepository.findByNameAndClassName(student.getName(),student.getClassName());
+    }
+
+    @Override
+    public ArrayList<StudentPDM> getStudentDetailByClassNameAndDepartment(StudentPDM student) throws QueryInfoError {
+        if(student == null
+                || student.getDepartment() == null
+                || student.getClassName() == null
+                )
+            throw new QueryInfoError();
+
+        return studentRepository.findByClassNameAndDepartment(student.getClassName(),student.getDepartment());
+    }
+
+    @Override
+    public ArrayList<StudentPDM> getStudentDetailByNameAndClassNameAndDepartment(StudentPDM student) throws QueryInfoError {
+        if(student == null
+                || student.getDepartment() == null
+                || student.getClassName() == null
+                || student.getName() == null
+                )
+            throw new QueryInfoError();
+
+        return studentRepository.findByNameAndClassNameAndDepartment(student.getName(),student.getClassName(),student.getDepartment());
     }
 }

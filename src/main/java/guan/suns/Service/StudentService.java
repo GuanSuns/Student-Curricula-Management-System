@@ -1,10 +1,9 @@
 package guan.suns.service;
 
-import guan.suns.exception.PasswordErrorException;
-import guan.suns.exception.UserExistedException;
-import guan.suns.exception.UserInfoErrorException;
-import guan.suns.exception.UserNotFoundException;
+import guan.suns.exception.*;
 import guan.suns.model.StudentPDM;
+
+import java.util.ArrayList;
 
 /**
  * Created by lenovo on 2016/5/9.
@@ -20,5 +19,19 @@ public interface StudentService {
     public StudentPDM getStudentDetail(StudentPDM student) throws UserNotFoundException, UserInfoErrorException;
 
     public boolean updateStudent(StudentPDM student) throws UserNotFoundException, UserInfoErrorException;
+
+    public ArrayList<StudentPDM> getStudentDetailByName(StudentPDM student) throws QueryInfoError;
+
+    public ArrayList<StudentPDM> getStudentDetailByDepartment(StudentPDM student) throws QueryInfoError;
+
+    public ArrayList<StudentPDM> getStudentDetailByClassName(StudentPDM student) throws QueryInfoError;
+
+    public ArrayList<StudentPDM> getStudentDetailByNameAndDepartment(StudentPDM student) throws QueryInfoError;
+
+    public ArrayList<StudentPDM> getStudentDetailByNameAndClassName(StudentPDM student) throws QueryInfoError;
+
+    public ArrayList<StudentPDM> getStudentDetailByClassNameAndDepartment(StudentPDM student) throws QueryInfoError;
+
+    public ArrayList<StudentPDM> getStudentDetailByNameAndClassNameAndDepartment(StudentPDM student) throws QueryInfoError;
 
 }

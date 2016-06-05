@@ -174,6 +174,8 @@ public class CourseServiceImpl implements CourseService {
         courseScore.setScore(courseSelection.getScore());
         courseScore.setSelectYear(courseSelection.getSelectYear());
 
+        courseSelectionRepository.save(courseScore);
+
         return true;
     }
 

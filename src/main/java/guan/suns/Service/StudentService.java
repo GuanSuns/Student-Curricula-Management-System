@@ -34,4 +34,6 @@ public interface StudentService {
 
     public ArrayList<StudentPDM> getStudentDetailByNameAndClassNameAndDepartment(StudentPDM student) throws QueryInfoError;
 
+    public ArrayList<StudentPDM> getAllStudentsDetail();
+
 }

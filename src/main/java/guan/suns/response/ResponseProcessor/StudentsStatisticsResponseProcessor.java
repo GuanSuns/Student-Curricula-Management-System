@@ -1,14 +1,14 @@
 package guan.suns.response.ResponseProcessor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guan.suns.response.StudentsDetailsByNameAndClassAndDepartmentResponse;
+import guan.suns.response.StudentsStatisticsResponse;
 
 /**
  * Created by lenovo on 2016/6/5.
  */
-public class StudentsDetailsByNameAndClassAndDepartmentResponseProcessor {
+public class StudentsStatisticsResponseProcessor {
 
-    public String generateResponse(StudentsDetailsByNameAndClassAndDepartmentResponse studentsDetailResponse)
+    public String generateResponse(StudentsStatisticsResponse studentsDetailResponse)
     {
         ObjectMapper mapper = new ObjectMapper();
         String strResponse="";

@@ -10,7 +10,6 @@ public class UrlConstant {
     public static final String StudentCreate = "/create";
     public static final String StudentUpdate = "/update";
     public static final String GetStudentDetail = "/detail";
-    public static final String GetStudentDetailByName = "/detailByName";
 
     public static final String TeacherAccountRoot = "/teacherAccount";
     public static final String TeacherLogin = "/login";
@@ -29,6 +28,7 @@ public class UrlConstant {
     public static final String StudentCourseRoot = "/studentCourse";
     public static final String SelectCourse = "/select";
     public static final String DropCourse = "/drop";
+    public static final String GetStudentDetailsStatistics = "/statistics";
 
     public static final String AdministratorRoot = "/Administrator";
     public static final String AdministratorInsertScore = "insertScore";

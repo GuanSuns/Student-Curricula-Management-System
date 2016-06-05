@@ -1,6 +1,8 @@
 package guan.suns.controller;
 
 import guan.suns.controller.JsonProcessor.GetCourseDetailRequestProcessor;
+import guan.suns.controller.JsonProcessor.StudentJsonProcessor.StudentDetailsStatisticsRequestProcessor;
+import guan.suns.controller.JsonProcessor.StudentJsonProcessor.StudentsDetailProcessor;
 import guan.suns.controller.JsonProcessor.TeacherJsonProcessor.CreateCourseRequestProcessor;
 import guan.suns.controller.JsonProcessor.TeacherJsonProcessor.DeleteCourseRequestProcessor;
 import guan.suns.controller.JsonProcessor.TeacherJsonProcessor.InsertScoreRequestProcessor;
@@ -9,16 +11,16 @@ import guan.suns.exception.*;
 import guan.suns.model.*;
 import guan.suns.repository.TeacherRepository;
 import guan.suns.request.GetCourseDetailRequest;
+import guan.suns.request.StudentRequest.GetStudentDetailsStatisticsRequest;
 import guan.suns.request.TeacherRequest.CreateCourseRequest;
 import guan.suns.request.TeacherRequest.DeleteCourseRequest;
 import guan.suns.request.TeacherRequest.InsertScoreRequest;
 import guan.suns.request.TeacherRequest.InsertScoreRequestItem;
-import guan.suns.response.CommonResponse;
-import guan.suns.response.CourseDetailResponse;
-import guan.suns.response.InsertScoreResponse;
+import guan.suns.response.*;
 import guan.suns.response.ResponseProcessor.CommonResponseProcessor;
 import guan.suns.response.ResponseProcessor.CourseDetailResponseProcessor;
 import guan.suns.response.ResponseProcessor.InsertScoreResponseProcessor;
+import guan.suns.response.ResponseProcessor.StudentsStatisticsResponseProcessor;
 import guan.suns.response.responseConstant.ResponseIntStatus;
 import guan.suns.response.responseConstant.ResponseString;
 import guan.suns.response.responseItem.CourseDetailItem;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Created by lenovo on 2016/5/29.
@@ -487,6 +490,108 @@ public class TeacherCourseController {
         insertScoreResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
         insertScoreResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
         return insertScoreResponseProcessor.generateResponse(insertScoreResponse);
+    }
+
+
+    @RequestMapping(value = UrlConstant.GetStudentDetailsStatistics, method = RequestMethod.POST)
+    @ResponseBody
+    public String getStudentDetailsStatistics(HttpServletRequest httpServletRequest){
+
+        InputStream inputStream = null;
+        StudentsStatisticsResponse studentsDetailResponse = new StudentsStatisticsResponse();
+        StudentsStatisticsResponseProcessor studentsDetailsResponseProcessor = new StudentsStatisticsResponseProcessor();
+        StudentDetailsStatisticsRequestProcessor studentsDetailsRequestProcessor = new StudentDetailsStatisticsRequestProcessor();
+        GetStudentDetailsStatisticsRequest getStudentsDetailRequest;
+
+        try{
+            inputStream = httpServletRequest.getInputStream();
+
+            if(inputStream == null){
+                studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+                studentsDetailResponse.setInfo(ResponseString.HttpServletRequestIOException);
+                return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+            }
+
+            String requestBody = IOUtils.toString(inputStream,"utf-8");
+            getStudentsDetailRequest = studentsDetailsRequestProcessor.getRequest(requestBody);
+
+            int queryMethod = 0;
+            if(getStudentsDetailRequest.getName() != null){
+                queryMethod = queryMethod + 1 ;
+            }
+            if(getStudentsDetailRequest.getClassName()!= null){
+                queryMethod = queryMethod + 10;
+            }
+            if(getStudentsDetailRequest.getDepartment() != null){
+                queryMethod = queryMethod + 100;
+            }
+
+            ArrayList<StudentPDM> students;
+
+            switch (queryMethod){
+                case 0 :
+                    students = studentService.getAllStudentsDetail();
+                    break;
+                case 1 :
+                    students = studentService.getStudentDetailByName(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                case 10 :
+                    students = studentService.getStudentDetailByClassName(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                case 100 :
+                    students = studentService.getStudentDetailByDepartment(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                case 11 :
+                    students = studentService.getStudentDetailByNameAndClassName(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                case 101 :
+                    students = studentService.getStudentDetailByNameAndDepartment(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                case 110 :
+                    students = studentService.getStudentDetailByClassNameAndDepartment(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                case 111 :
+                    students = studentService.getStudentDetailByNameAndClassNameAndDepartment(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                default:
+                    studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+                    studentsDetailResponse.setInfo(ResponseString.GetStudentsDetailsByNameOrDepartmentOrClassNameQueryInfoError);
+                    return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+            }
+
+            ArrayList<StudentDetailResponse> studentsDetails = new StudentsDetailProcessor().getStudentsResponse(students);
+            studentsDetailResponse.setStudents(studentsDetails);
+
+        }
+        catch (IOException ioException){
+
+            ioException.printStackTrace();
+            studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            studentsDetailResponse.setInfo(ResponseString.HttpServletRequestIOException);
+
+            return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+        }
+        catch (JsonErrorException jsonErrorException){
+
+            jsonErrorException.printStackTrace();
+            studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            studentsDetailResponse.setInfo(ResponseString.JsonProcessingErrorException);
+
+            return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+        }
+        catch (QueryInfoError queryInfoError){
+            queryInfoError.printStackTrace();
+
+            studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            studentsDetailResponse.setInfo(ResponseString.GetStudentsDetailsByNameOrDepartmentOrClassNameQueryInfoError);
+
+            return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+        }
+
+
+        studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
+        studentsDetailResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
+        return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
     }
 
 }

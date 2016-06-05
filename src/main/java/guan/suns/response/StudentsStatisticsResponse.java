@@ -5,17 +5,17 @@ import java.util.ArrayList;
 /**
  * Created by lenovo on 2016/6/5.
  */
-public class StudentsDetailsByNameAndClassAndDepartmentResponse {
+public class StudentsStatisticsResponse {
 
     private Integer status;
     private String info;
 
     private ArrayList<StudentDetailResponse> students;
 
-    public StudentsDetailsByNameAndClassAndDepartmentResponse() {
+    public StudentsStatisticsResponse() {
     }
 
-    public StudentsDetailsByNameAndClassAndDepartmentResponse(Integer status, String info, ArrayList<StudentDetailResponse> students) {
+    public StudentsStatisticsResponse(Integer status, String info, ArrayList<StudentDetailResponse> students) {
         this.status = status;
         this.info = info;
         this.students = students;

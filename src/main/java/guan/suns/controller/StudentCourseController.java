@@ -1,15 +1,22 @@
 package guan.suns.controller;
 
 import guan.suns.controller.JsonProcessor.StudentJsonProcessor.SelectOrDropCourseRequestProcessor;
+import guan.suns.controller.JsonProcessor.StudentJsonProcessor.StudentDetailsStatisticsRequestProcessor;
+import guan.suns.controller.StatisticsProcessor.StudentsStatisticsProcessor;
+import guan.suns.controller.StatisticsProcessor.StudentsDetailQueryProcessor;
 import guan.suns.controller.mappingUrl.UrlConstant;
 import guan.suns.exception.*;
 import guan.suns.model.CoursePDM;
 import guan.suns.model.CourseSelectionCompositeId;
 import guan.suns.model.CourseSelectionPDM;
 import guan.suns.model.StudentPDM;
+import guan.suns.request.StudentRequest.GetStudentDetailsStatisticsRequest;
 import guan.suns.request.StudentRequest.SelectOrDropCourseRequest;
 import guan.suns.response.CommonResponse;
 import guan.suns.response.ResponseProcessor.CommonResponseProcessor;
+import guan.suns.response.ResponseProcessor.StudentsStatisticsResponseProcessor;
+import guan.suns.response.StudentDetailResponse;
+import guan.suns.response.StudentsStatisticsResponse;
 import guan.suns.response.responseConstant.ResponseIntStatus;
 import guan.suns.response.responseConstant.ResponseString;
 import guan.suns.service.CourseService;
@@ -26,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -284,6 +292,63 @@ public class StudentCourseController {
         }
 
         return commonResponseProcessor.generateResponse(commonResponse);
+    }
+
+    @RequestMapping(value = UrlConstant.GetStudentDetailsStatistics, method = RequestMethod.POST)
+    @ResponseBody
+    public String getStudentDetailsStatistics(HttpServletRequest httpServletRequest){
+
+        InputStream inputStream = null;
+        StudentsStatisticsResponse studentsDetailResponse = new StudentsStatisticsResponse();
+        StudentsStatisticsResponseProcessor studentsDetailsResponseProcessor = new StudentsStatisticsResponseProcessor();
+        StudentDetailsStatisticsRequestProcessor studentsDetailsRequestProcessor = new StudentDetailsStatisticsRequestProcessor();
+        GetStudentDetailsStatisticsRequest getStudentsDetailRequest;
+
+        try{
+            inputStream = httpServletRequest.getInputStream();
+
+            if(inputStream == null){
+                studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+                studentsDetailResponse.setInfo(ResponseString.HttpServletRequestIOException);
+                return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+            }
+
+            String requestBody = IOUtils.toString(inputStream,"utf-8");
+            getStudentsDetailRequest = studentsDetailsRequestProcessor.getRequest(requestBody);
+
+            ArrayList<StudentPDM> students = new StudentsDetailQueryProcessor().getStudentsMultiConditionSearch(getStudentsDetailRequest);
+            studentsDetailResponse = new StudentsStatisticsProcessor().getStudentsResponse(students,getStudentsDetailRequest);
+
+        }
+        catch (IOException ioException){
+
+            ioException.printStackTrace();
+            studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            studentsDetailResponse.setInfo(ResponseString.HttpServletRequestIOException);
+
+            return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+        }
+        catch (JsonErrorException jsonErrorException){
+
+            jsonErrorException.printStackTrace();
+            studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            studentsDetailResponse.setInfo(ResponseString.JsonProcessingErrorException);
+
+            return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+        }
+        catch (QueryInfoError queryInfoError){
+            queryInfoError.printStackTrace();
+
+            studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            studentsDetailResponse.setInfo(ResponseString.GetStudentsDetailsByNameOrDepartmentOrClassNameQueryInfoError);
+
+            return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+        }
+
+
+        studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
+        studentsDetailResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
+        return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
     }
 
 }

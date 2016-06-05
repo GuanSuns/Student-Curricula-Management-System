@@ -4,8 +4,6 @@ import guan.suns.controller.JsonProcessor.DeleteUserRequestProcessor;
 import guan.suns.controller.JsonProcessor.GetUserDetailRequestProcessor;
 import guan.suns.controller.JsonProcessor.LoginRequestProcessor;
 import guan.suns.controller.JsonProcessor.StudentJsonProcessor.CreateStudentRequestProcessor;
-import guan.suns.controller.JsonProcessor.StudentJsonProcessor.StudentDetailsStatisticsRequestProcessor;
-import guan.suns.controller.JsonProcessor.StudentJsonProcessor.StudentsDetailProcessor;
 import guan.suns.controller.mappingUrl.UrlConstant;
 import guan.suns.exception.*;
 import guan.suns.model.CourseSelectionPDM;
@@ -14,13 +12,10 @@ import guan.suns.request.DeleteUserRequest;
 import guan.suns.request.GetUserDetailRequest;
 import guan.suns.request.LoginRequest;
 import guan.suns.request.StudentRequest.CreateStudentRequest;
-import guan.suns.request.StudentRequest.GetStudentDetailsStatisticsRequest;
 import guan.suns.response.CommonResponse;
 import guan.suns.response.ResponseProcessor.CommonResponseProcessor;
 import guan.suns.response.ResponseProcessor.StudentDetailResponseProcessor;
-import guan.suns.response.ResponseProcessor.StudentsStatisticsResponseProcessor;
 import guan.suns.response.StudentDetailResponse;
-import guan.suns.response.StudentsStatisticsResponse;
 import guan.suns.response.responseConstant.*;
 import guan.suns.response.responseItem.StudentAttendClassItem;
 import guan.suns.service.StudentService;
@@ -417,6 +412,5 @@ public class StudentAccountController {
         studentDetailResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
         return studentDetailResponseProcessor.generateResponse(studentDetailResponse);
     }
-
 
 }

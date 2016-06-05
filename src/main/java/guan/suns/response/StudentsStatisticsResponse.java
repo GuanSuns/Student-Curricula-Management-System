@@ -10,15 +10,25 @@ public class StudentsStatisticsResponse {
     private Integer status;
     private String info;
 
+    private Float avg;
     private ArrayList<StudentDetailResponse> students;
 
     public StudentsStatisticsResponse() {
     }
 
-    public StudentsStatisticsResponse(Integer status, String info, ArrayList<StudentDetailResponse> students) {
+    public StudentsStatisticsResponse(Integer status, String info, Float avg, ArrayList<StudentDetailResponse> students) {
         this.status = status;
         this.info = info;
+        this.avg = avg;
         this.students = students;
+    }
+
+    public Float getAvg() {
+        return avg;
+    }
+
+    public void setAvg(Float avg) {
+        this.avg = avg;
     }
 
     public Integer getStatus() {

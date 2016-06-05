@@ -455,10 +455,8 @@ public class StudentAccountController {
 
             switch (queryMethod){
                 case 0 :
-                    studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
-                    studentsDetailResponse.setInfo(ResponseString.GetStudentsDetailsByNameOrDepartmentOrClassNameQueryInfoError);
-
-                    return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
+                    students = studentService.getAllStudentsDetail();
+                    break;
                 case 1 :
                     students = studentService.getStudentDetailByName(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
                     break;
@@ -468,12 +466,26 @@ public class StudentAccountController {
                 case 100 :
                     students = studentService.getStudentDetailByDepartment(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
                     break;
-
-
-
+                case 11 :
+                    students = studentService.getStudentDetailByNameAndClassName(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                case 101 :
+                    students = studentService.getStudentDetailByNameAndDepartment(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                case 110 :
+                    students = studentService.getStudentDetailByClassNameAndDepartment(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                case 111 :
+                    students = studentService.getStudentDetailByNameAndClassNameAndDepartment(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
+                    break;
+                default:
+                    studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+                    studentsDetailResponse.setInfo(ResponseString.GetStudentsDetailsByNameOrDepartmentOrClassNameQueryInfoError);
+                    return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
             }
 
-            
+            ArrayList<StudentDetailResponse> studentsDetails = new StudentsDetailProcessor().getStudentsResponse(students);
+            studentsDetailResponse.setStudents(studentsDetails);
 
         }
         catch (IOException ioException){

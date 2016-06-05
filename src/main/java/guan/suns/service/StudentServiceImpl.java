@@ -6,6 +6,7 @@ import guan.suns.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -209,5 +210,11 @@ public class StudentServiceImpl implements StudentService {
             throw new QueryInfoError();
 
         return studentRepository.findByNameAndClassNameAndDepartment(student.getName(),student.getClassName(),student.getDepartment());
+    }
+
+    @Override
+    public ArrayList<StudentPDM> getAllStudentsDetail() {
+        ArrayList<StudentPDM> students = new ArrayList<>(studentRepository.findAll());
+        return students;
     }
 }

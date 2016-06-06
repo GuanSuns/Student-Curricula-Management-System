@@ -32,6 +32,7 @@ import java.util.ArrayList;
  * Created by lenovo on 2016/5/23.
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = UrlConstant.StudentAccountRoot)
 public class StudentAccountController {

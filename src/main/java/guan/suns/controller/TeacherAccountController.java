@@ -22,10 +22,7 @@ import guan.suns.response.responseItem.CourseDetailItem;
 import guan.suns.service.TeacherService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -36,6 +33,7 @@ import java.util.ArrayList;
  * Created by lenovo on 2016/5/28.
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = UrlConstant.TeacherAccountRoot)
 public class TeacherAccountController {

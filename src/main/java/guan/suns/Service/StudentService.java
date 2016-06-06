@@ -2,12 +2,14 @@ package guan.suns.service;
 
 import guan.suns.exception.*;
 import guan.suns.model.StudentPDM;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
 /**
  * Created by lenovo on 2016/5/9.
  */
+
 public interface StudentService {
 
     public StudentPDM loginStudent(StudentPDM student) throws UserNotFoundException,PasswordErrorException;

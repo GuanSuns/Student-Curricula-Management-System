@@ -9,12 +9,14 @@ import guan.suns.response.responseConstant.ResponseIntStatus;
 import guan.suns.response.responseConstant.ResponseString;
 import guan.suns.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
 /**
  * Created by lenovo on 2016/6/5.
  */
+@Component
 public class StudentsDetailQueryProcessor {
 
     @Autowired
@@ -22,15 +24,15 @@ public class StudentsDetailQueryProcessor {
 
     public ArrayList<StudentPDM> getStudentsMultiConditionSearch(GetStudentDetailsStatisticsRequest getStudentsDetailRequest) throws QueryInfoError {
 
-        if(getStudentsDetailRequest==null) return null;
-		
-		ArrayList<StudentPDM> students;
+        ArrayList<StudentPDM> students = new ArrayList<>();
+        students.clear();
 
-        if(getStudentsDetailRequest.getStudentID()!=null){
+        if( getStudentsDetailRequest == null ) return students;
+
+        if( getStudentsDetailRequest.getStudentID() != null) {
 			StudentPDM student;
 			try{
 				student = studentService.getStudentDetail(new StudentPDM(getStudentsDetailRequest.getStudentID(),"",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
-                students = new ArrayList<>();
                 students.add(student);
 			}
 			catch(UserInfoErrorException userInfoErrorException){
@@ -81,7 +83,7 @@ public class StudentsDetailQueryProcessor {
                         students = studentService.getStudentDetailByNameAndClassNameAndDepartment(new StudentPDM("","",getStudentsDetailRequest.getName(),null,getStudentsDetailRequest.getClassName(),getStudentsDetailRequest.getDepartment(),null,null));
                         break;
                     default:
-                        return null;
+                        break;
                 }
             }
             catch(QueryInfoError queryInfoError){

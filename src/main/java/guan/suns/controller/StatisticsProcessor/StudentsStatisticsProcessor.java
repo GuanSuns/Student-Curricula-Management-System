@@ -1,5 +1,6 @@
 package guan.suns.controller.StatisticsProcessor;
 
+import guan.suns.exception.QueryInfoError;
 import guan.suns.model.CourseSelectionPDM;
 import guan.suns.model.StudentPDM;
 import guan.suns.request.GetUserDetailRequest;
@@ -17,8 +18,9 @@ import java.util.ArrayList;
  */
 public class StudentsStatisticsProcessor {
 
-    public StudentsStatisticsResponse getStudentsResponse(ArrayList<StudentPDM> students, GetStudentDetailsStatisticsRequest getStudentDetailsStatisticsRequest){
-        if(students == null) return null;
+    public StudentsStatisticsResponse getStudentsResponse(ArrayList<StudentPDM> students, GetStudentDetailsStatisticsRequest getStudentDetailsStatisticsRequest) throws QueryInfoError{
+
+        if(students == null || getStudentDetailsStatisticsRequest == null) throw new QueryInfoError();
 
         StudentsStatisticsResponse studentsStatisticsResponse = new StudentsStatisticsResponse();
         ArrayList<StudentDetailResponse> studentsDetails = new ArrayList<>();
@@ -41,6 +43,10 @@ public class StudentsStatisticsProcessor {
 
             ArrayList<StudentAttendClassItem> classes = new ArrayList<>();
             classes.clear();
+            boolean flag = false;
+            if( getStudentDetailsStatisticsRequest.getCourseName()==null
+                    && getStudentDetailsStatisticsRequest.getCourseID()==null)
+                flag = true;
 
             for(CourseSelectionPDM courseItem : student.getSelectedCourses()){
 
@@ -58,14 +64,20 @@ public class StudentsStatisticsProcessor {
 
                     classes.add(studentAttendClassItem);
 
-                    cntCourse++;
-                    totalScore = totalScore + courseItem.getScore();
+                    if(courseItem.getScore()!=0){
+                        cntCourse++;
+                        totalScore = totalScore + courseItem.getScore();
+                    }
 
+                    flag = true;
                 }
             }
 
             studentDetailResponse.setAttendClasses(classes);
-            studentsDetails.add(studentDetailResponse);
+
+            if(flag){
+                studentsDetails.add(studentDetailResponse);
+            }
         }
 
         studentsStatisticsResponse.setStudents(studentsDetails);

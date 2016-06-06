@@ -49,6 +49,8 @@ public class StudentCourseController {
     private CourseService courseService;
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private StudentsDetailQueryProcessor studentsDetailQueryProcessor;
 
     @RequestMapping(value = UrlConstant.SelectCourse , method = RequestMethod.POST)
     @ResponseBody
@@ -316,9 +318,8 @@ public class StudentCourseController {
             String requestBody = IOUtils.toString(inputStream,"utf-8");
             getStudentsDetailRequest = studentsDetailsRequestProcessor.getRequest(requestBody);
 
-            ArrayList<StudentPDM> students = new StudentsDetailQueryProcessor().getStudentsMultiConditionSearch(getStudentsDetailRequest);
+            ArrayList<StudentPDM> students = studentsDetailQueryProcessor.getStudentsMultiConditionSearch(getStudentsDetailRequest);
             studentsDetailResponse = new StudentsStatisticsProcessor().getStudentsResponse(students,getStudentsDetailRequest);
-
         }
         catch (IOException ioException){
 
@@ -344,7 +345,6 @@ public class StudentCourseController {
 
             return studentsDetailsResponseProcessor.generateResponse(studentsDetailResponse);
         }
-
 
         studentsDetailResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
         studentsDetailResponse.setInfo(ResponseString.CommonResponseSuccessDescription);

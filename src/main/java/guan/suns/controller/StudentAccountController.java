@@ -61,6 +61,9 @@ public class StudentAccountController {
             }
 
             String requestBody = IOUtils.toString(inputStream,"utf-8");
+
+            System.out.println("Login Request: "+requestBody);
+
             loginRequest = loginRequestProcessor.getLoginRequest(requestBody);
 
             StudentPDM student = new StudentPDM();

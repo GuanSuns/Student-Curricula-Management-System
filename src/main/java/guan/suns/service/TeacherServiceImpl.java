@@ -100,7 +100,7 @@ public class TeacherServiceImpl implements TeacherService{
     @Override
     public TeacherPDM getTeacherDetail(TeacherPDM teacher) throws UserNotFoundException, UserInfoErrorException {
         if(teacher == null
-                || ( (teacher.getTeacherID() == null || teacher.getTeacherID().equals("") ) &&  (teacher.getTeacherID() == null || teacher.getTeacherName().equals("") ) )
+                || ( (teacher.getTeacherID() == null || teacher.getTeacherID().equals("") ) &&  (teacher.getTeacherName() == null || teacher.getTeacherName().equals("") ) )
         ){
             throw new UserInfoErrorException();
         }

@@ -1,5 +1,6 @@
 package guan.suns.controller;
 
+import guan.suns.controller.JsonProcessor.GetCourseDetailRequestProcessor;
 import guan.suns.controller.JsonProcessor.TeacherJsonProcessor.InsertScoreRequestProcessor;
 import guan.suns.controller.mappingUrl.UrlConstant;
 import guan.suns.exception.*;
@@ -7,12 +8,19 @@ import guan.suns.model.CoursePDM;
 import guan.suns.model.CourseSelectionCompositeId;
 import guan.suns.model.CourseSelectionPDM;
 import guan.suns.model.StudentPDM;
+import guan.suns.request.GetCourseDetailRequest;
 import guan.suns.request.TeacherRequest.InsertScoreRequest;
 import guan.suns.request.TeacherRequest.InsertScoreRequestItem;
+import guan.suns.response.CoursesDetailResponse;
+import guan.suns.response.GetAllCoursesResponse;
 import guan.suns.response.InsertScoreResponse;
+import guan.suns.response.ResponseProcessor.CourseDetailResponseProcessor;
+import guan.suns.response.ResponseProcessor.GetAllCoursesResponseProcessor;
 import guan.suns.response.ResponseProcessor.InsertScoreResponseProcessor;
 import guan.suns.response.responseConstant.ResponseIntStatus;
 import guan.suns.response.responseConstant.ResponseString;
+import guan.suns.response.responseItem.CourseDetailsItem;
+import guan.suns.response.responseItem.CourseStudentItem;
 import guan.suns.service.CourseService;
 import guan.suns.service.StudentService;
 import guan.suns.service.TeacherService;
@@ -23,6 +31,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by lenovo on 2016/5/31.
@@ -116,6 +126,34 @@ public class AdministratorController {
         insertScoreResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
         insertScoreResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
         return insertScoreResponseProcessor.generateResponse(insertScoreResponse);
+    }
+
+    @RequestMapping(value = UrlConstant.GetAllCourses , method = RequestMethod.POST)
+    @ResponseBody
+    public String getAllCourses(){
+
+        GetAllCoursesResponse getAllCoursesResponse = new GetAllCoursesResponse();
+        GetAllCoursesResponseProcessor getAllCoursesResponseProcessor = new GetAllCoursesResponseProcessor();
+
+        ArrayList<CoursePDM> courses = courseService.getAllCourses();
+        ArrayList<CourseDetailsItem> courseDetailsItems = new ArrayList<>();
+
+        for(CoursePDM course : courses){
+            CourseDetailsItem courseDetailsItem = new CourseDetailsItem();
+
+            courseDetailsItem.setStudents(null);
+            courseDetailsItem.setCourseID(course.getCourseID());
+            courseDetailsItem.setCourseName(course.getCourseName());
+            courseDetailsItem.setExpiredDate(course.getExpiredDate());
+            courseDetailsItem.setSuitableGrade(course.getSuitableGrade().ordinal());
+            courseDetailsItem.setTeacherID(course.getTeacherID().getTeacherID());
+            courseDetailsItem.setTeacherName(course.getTeacherID().getTeacherName());
+
+            courseDetailsItems.add(courseDetailsItem);
+        }
+
+        getAllCoursesResponse.setCourses(courseDetailsItems);
+        return getAllCoursesResponseProcessor.generateResponse(getAllCoursesResponse);
     }
 
 }

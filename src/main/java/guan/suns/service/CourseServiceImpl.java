@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lenovo on 2016/5/28.
@@ -289,5 +290,17 @@ public class CourseServiceImpl implements CourseService {
         courseSelectionRepository.delete(courseScore);
 
         return true;
+    }
+
+    @Override
+    public ArrayList<CoursePDM> getAllCourses() {
+        List<CoursePDM> coursePDMs = courseRepository.findAll();
+        ArrayList<CoursePDM> courses = new ArrayList<>();
+
+        if(coursePDMs==null || coursePDMs.isEmpty()) return courses;
+
+        courses.addAll(coursePDMs);
+
+        return courses;
     }
 }

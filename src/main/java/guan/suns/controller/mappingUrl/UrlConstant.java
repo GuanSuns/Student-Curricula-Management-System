@@ -32,5 +32,6 @@ public class UrlConstant {
 
     public static final String AdministratorRoot = "/Administrator";
     public static final String AdministratorInsertScore = "insertScore";
+    public static final String GetAllCourses = "/allCourses";
 
 }

@@ -4,6 +4,8 @@ import guan.suns.exception.*;
 import guan.suns.model.CoursePDM;
 import guan.suns.model.CourseSelectionPDM;
 
+import java.util.ArrayList;
+
 /**
  * Created by lenovo on 2016/5/28.
  */
@@ -23,4 +25,6 @@ public interface CourseService {
     public boolean selectCourse(CourseSelectionPDM courseSelection) throws CourseSelectionExistedException,CourseSelectionInfoError, StudentCanNotSelectCourseException, UserInfoErrorException;
 
     public boolean dropCourse(CourseSelectionPDM courseSelection) throws CourseNotSelectedException, CourseSelectionInfoError;
+
+    public ArrayList<CoursePDM> getAllCourses();
 }

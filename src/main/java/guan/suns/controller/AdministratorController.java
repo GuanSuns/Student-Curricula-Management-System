@@ -133,12 +133,12 @@ public class AdministratorController {
     public String getAllCourses(){
 
         GetAllCoursesResponse getAllCoursesResponse = new GetAllCoursesResponse();
-        GetAllCoursesResponseProcessor getAllCoursesResponseProcessor = new GetAllCoursesResponseProcessor();
 
         ArrayList<CoursePDM> courses = courseService.getAllCourses();
         ArrayList<CourseDetailsItem> courseDetailsItems = new ArrayList<>();
 
         for(CoursePDM course : courses){
+
             CourseDetailsItem courseDetailsItem = new CourseDetailsItem();
 
             courseDetailsItem.setStudents(null);
@@ -153,7 +153,7 @@ public class AdministratorController {
         }
 
         getAllCoursesResponse.setCourses(courseDetailsItems);
-        return getAllCoursesResponseProcessor.generateResponse(getAllCoursesResponse);
+        return new GetAllCoursesResponseProcessor().generateResponse(getAllCoursesResponse);
     }
 
 }

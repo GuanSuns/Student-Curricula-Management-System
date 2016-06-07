@@ -1,6 +1,6 @@
 package guan.suns.response;
 
-import guan.suns.response.responseItem.CourseDetailItem;
+import guan.suns.response.responseItem.CourseDetailsItem;
 
 import java.util.ArrayList;
 
@@ -16,12 +16,12 @@ public class TeacherDetailResponse {
     private String teacherName;
     private Integer department;
 
-    private ArrayList<CourseDetailItem> openCourses;
+    private ArrayList<CourseDetailsItem> openCourses;
 
     public TeacherDetailResponse() {
     }
 
-    public TeacherDetailResponse(Integer status, String info, String teacherID, String teacherName, Integer department, ArrayList<CourseDetailItem> openCourses) {
+    public TeacherDetailResponse(Integer status, String info, String teacherID, String teacherName, Integer department, ArrayList<CourseDetailsItem> openCourses) {
         this.status = status;
         this.info = info;
         this.teacherID = teacherID;
@@ -70,11 +70,11 @@ public class TeacherDetailResponse {
         this.department = department;
     }
 
-    public ArrayList<CourseDetailItem> getOpenCourses() {
+    public ArrayList<CourseDetailsItem> getOpenCourses() {
         return openCourses;
     }
 
-    public void setOpenCourses(ArrayList<CourseDetailItem> openCourses) {
+    public void setOpenCourses(ArrayList<CourseDetailsItem> openCourses) {
         this.openCourses = openCourses;
     }
 }

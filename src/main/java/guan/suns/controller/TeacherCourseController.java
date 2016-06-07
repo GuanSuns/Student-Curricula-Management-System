@@ -19,7 +19,7 @@ import guan.suns.response.ResponseProcessor.CourseDetailResponseProcessor;
 import guan.suns.response.ResponseProcessor.InsertScoreResponseProcessor;
 import guan.suns.response.responseConstant.ResponseIntStatus;
 import guan.suns.response.responseConstant.ResponseString;
-import guan.suns.response.responseItem.CourseDetailItem;
+import guan.suns.response.responseItem.CourseDetailsItem;
 import guan.suns.response.responseItem.CourseStudentItem;
 import guan.suns.service.CourseService;
 import guan.suns.service.StudentService;
@@ -377,8 +377,8 @@ public class TeacherCourseController {
                 }
             }
 
-            CourseDetailItem courseDetailItem = new CourseDetailItem(course.getCourseID(),course.getCourseName(),course.getTeacherID().getTeacherID(),course.getTeacherID().getTeacherName(),course.getExpiredDate(),course.getSuitableGrade().ordinal(),students);
-            coursesDetailResponse.setDetail(courseDetailItem);
+            CourseDetailsItem courseDetailsItem = new CourseDetailsItem(course.getCourseID(),course.getCourseName(),course.getTeacherID().getTeacherID(),course.getTeacherID().getTeacherName(),course.getExpiredDate(),course.getSuitableGrade().ordinal(),students);
+            coursesDetailResponse.setDetail(courseDetailsItem);
 
         }
         catch (IOException ioException){

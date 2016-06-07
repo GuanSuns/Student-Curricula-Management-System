@@ -1,8 +1,6 @@
 package guan.suns.response;
 
-import guan.suns.response.responseItem.CourseDetailItem;
-
-import java.util.ArrayList;
+import guan.suns.response.responseItem.CourseDetailsItem;
 
 /**
  * Created by lenovo on 2016/5/30.
@@ -11,22 +9,22 @@ public class CoursesDetailResponse {
 
     private Integer status;
     private String info;
-    private CourseDetailItem detail;
+    private CourseDetailsItem detail;
 
     public CoursesDetailResponse() {
     }
 
-    public CoursesDetailResponse(Integer status, String info, CourseDetailItem detail) {
+    public CoursesDetailResponse(Integer status, String info, CourseDetailsItem detail) {
         this.status = status;
         this.info = info;
         this.detail = detail;
     }
 
-    public CourseDetailItem getDetail() {
+    public CourseDetailsItem getDetail() {
         return detail;
     }
 
-    public void setDetail(CourseDetailItem detail) {
+    public void setDetail(CourseDetailsItem detail) {
         this.detail = detail;
     }
 

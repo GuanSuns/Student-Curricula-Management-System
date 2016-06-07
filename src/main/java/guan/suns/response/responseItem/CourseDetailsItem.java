@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by lenovo on 2016/5/29.
  */
-public class CourseDetailItem {
+public class CourseDetailsItem {
 
     private String courseID;
     private String courseName;
@@ -19,10 +19,10 @@ public class CourseDetailItem {
 
     private ArrayList<CourseStudentItem> students;
 
-    public CourseDetailItem() {
+    public CourseDetailsItem() {
     }
 
-    public CourseDetailItem(String courseID, String courseName, String teacherID, String teacherName, Timestamp expiredDate, Integer suitableGrade, ArrayList<CourseStudentItem> students) {
+    public CourseDetailsItem(String courseID, String courseName, String teacherID, String teacherName, Timestamp expiredDate, Integer suitableGrade, ArrayList<CourseStudentItem> students) {
         this.courseID = courseID;
         this.courseName = courseName;
         this.teacherID = teacherID;

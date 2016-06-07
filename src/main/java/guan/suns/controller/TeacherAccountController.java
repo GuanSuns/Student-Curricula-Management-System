@@ -18,7 +18,7 @@ import guan.suns.response.ResponseProcessor.TeacherDetailResponseProcessor;
 import guan.suns.response.TeacherDetailResponse;
 import guan.suns.response.responseConstant.ResponseIntStatus;
 import guan.suns.response.responseConstant.ResponseString;
-import guan.suns.response.responseItem.CourseDetailItem;
+import guan.suns.response.responseItem.CourseDetailsItem;
 import guan.suns.service.TeacherService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -338,21 +338,21 @@ public class TeacherAccountController {
             teacherDetailResponse.setTeacherName(teacher.getTeacherName());
             teacherDetailResponse.setDepartment(teacher.getDepartment().ordinal());
 
-            ArrayList<CourseDetailItem> classes = new ArrayList<>();
+            ArrayList<CourseDetailsItem> classes = new ArrayList<>();
             classes.clear();
 
             for(CoursePDM courseItem : teacher.getCourses()){
 
-                CourseDetailItem courseDetailItem = new CourseDetailItem();
+                CourseDetailsItem courseDetailsItem = new CourseDetailsItem();
 
-                courseDetailItem.setTeacherName(courseItem.getTeacherID().getTeacherName());
-                courseDetailItem.setTeacherID(courseItem.getTeacherID().getTeacherID());
-                courseDetailItem.setCourseID(courseItem.getCourseID());
-                courseDetailItem.setCourseName(courseItem.getCourseName());
-                courseDetailItem.setExpiredDate(courseItem.getExpiredDate());
-                courseDetailItem.setSuitableGrade(courseItem.getSuitableGrade().ordinal());
+                courseDetailsItem.setTeacherName(courseItem.getTeacherID().getTeacherName());
+                courseDetailsItem.setTeacherID(courseItem.getTeacherID().getTeacherID());
+                courseDetailsItem.setCourseID(courseItem.getCourseID());
+                courseDetailsItem.setCourseName(courseItem.getCourseName());
+                courseDetailsItem.setExpiredDate(courseItem.getExpiredDate());
+                courseDetailsItem.setSuitableGrade(courseItem.getSuitableGrade().ordinal());
 
-                classes.add(courseDetailItem);
+                classes.add(courseDetailsItem);
             }
 
             teacherDetailResponse.setOpenCourses(classes);

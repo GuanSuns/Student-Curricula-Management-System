@@ -1,6 +1,7 @@
 package guan.suns.service;
 
 import guan.suns.exception.*;
+import guan.suns.model.CourseSelectionPDM;
 import guan.suns.model.StudentPDM;
 import guan.suns.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private CourseService courseService;
 
     @Override
     public boolean createStudent(StudentPDM student) throws UserExistedException, UserInfoErrorException {
@@ -51,10 +54,24 @@ public class StudentServiceImpl implements StudentService {
                 )
             return false;
 
-        StudentPDM newStudent = studentRepository.findOne(student.getStudentID());
-        if(newStudent == null) throw new UserNotFoundException();
+        StudentPDM deleteStudent = studentRepository.findOne(student.getStudentID());
+        if(deleteStudent == null) throw new UserNotFoundException();
 
-        studentRepository.delete(newStudent);
+        for(CourseSelectionPDM course : deleteStudent.getSelectedCourses()){
+            if(course!=null){
+                try {
+                    courseService.dropCourse(course);
+                }
+                catch (CourseNotSelectedException courseNotSelectedException){
+                    courseNotSelectedException.printStackTrace();
+                }
+                catch (CourseSelectionInfoError courseSelectionInfoErrorException){
+                    courseSelectionInfoErrorException.printStackTrace();
+                }
+            }
+        }
+
+        studentRepository.delete(deleteStudent);
 
         return true;
     }

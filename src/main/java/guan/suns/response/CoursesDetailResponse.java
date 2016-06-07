@@ -2,21 +2,31 @@ package guan.suns.response;
 
 import guan.suns.response.responseItem.CourseDetailItem;
 
+import java.util.ArrayList;
+
 /**
  * Created by lenovo on 2016/5/30.
  */
-public class CourseDetailResponse {
+public class CoursesDetailResponse {
 
     private Integer status;
     private String info;
     private CourseDetailItem detail;
 
-    public CourseDetailResponse() {
+    public CoursesDetailResponse() {
     }
 
-    public CourseDetailResponse(Integer status, String info, CourseDetailItem detail) {
+    public CoursesDetailResponse(Integer status, String info, CourseDetailItem detail) {
         this.status = status;
         this.info = info;
+        this.detail = detail;
+    }
+
+    public CourseDetailItem getDetail() {
+        return detail;
+    }
+
+    public void setDetail(CourseDetailItem detail) {
         this.detail = detail;
     }
 
@@ -36,11 +46,5 @@ public class CourseDetailResponse {
         this.info = info;
     }
 
-    public CourseDetailItem getDetail() {
-        return detail;
-    }
 
-    public void setDetail(CourseDetailItem detail) {
-        this.detail = detail;
-    }
 }

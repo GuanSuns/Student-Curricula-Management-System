@@ -143,9 +143,11 @@ public class CourseServiceImpl implements CourseService {
         if( courseScore == null ) {
             throw new CourseNotSelectedException();
         }
+        /*
         if( courseScore.getScore() != 0) {
             throw new TeacherCannotModifyScoreException();
         }
+        */
 
         courseScore.setScore(courseSelection.getScore());
         courseScore.setSelectYear(courseSelection.getSelectYear());

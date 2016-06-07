@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 /**
  * Created by lenovo on 2016/5/29.
@@ -338,7 +337,7 @@ public class TeacherCourseController {
         InputStream inputStream = null;
         GetCourseDetailRequest getCourseDetailRequest = null;
         GetCourseDetailRequestProcessor getCourseDetailRequestProcessor = new GetCourseDetailRequestProcessor();
-        CourseDetailResponse courseDetailResponse = new CourseDetailResponse();
+        CoursesDetailResponse coursesDetailResponse = new CoursesDetailResponse();
         CourseDetailResponseProcessor courseDetailResponseProcessor = new CourseDetailResponseProcessor();
         CoursePDM course = null;
 
@@ -346,9 +345,9 @@ public class TeacherCourseController {
             inputStream = httpServletRequest.getInputStream();
 
             if(inputStream == null){
-                courseDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
-                courseDetailResponse.setInfo(ResponseString.HttpServletRequestIOException);
-                return courseDetailResponseProcessor.generateResponse(courseDetailResponse);
+                coursesDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+                coursesDetailResponse.setInfo(ResponseString.HttpServletRequestIOException);
+                return courseDetailResponseProcessor.generateResponse(coursesDetailResponse);
             }
 
             String requestBody = IOUtils.toString(inputStream,"utf-8");
@@ -356,51 +355,51 @@ public class TeacherCourseController {
 
             course = courseService.getCourseDetail(new CoursePDM(getCourseDetailRequest.getId(),"",null,null,null,null));
 
-            CourseDetailItem courseDetailItem = new CourseDetailItem(course.getCourseID(),course.getCourseName(),course.getTeacherID().getTeacherID(),course.getTeacherID().getTeacherName(),course.getExpiredDate(),course.getSuitableGrade().ordinal());
-            courseDetailResponse.setDetail(courseDetailItem);
+            CourseDetailItem courseDetailItem = new CourseDetailItem(course.getCourseID(),course.getCourseName(),course.getTeacherID().getTeacherID(),course.getTeacherID().getTeacherName(),course.getExpiredDate(),course.getSuitableGrade().ordinal(),null);
+            coursesDetailResponse.setDetail(courseDetailItem);
 
         }
         catch (IOException ioException){
 
             ioException.printStackTrace();
-            courseDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
-            courseDetailResponse.setInfo(ResponseString.HttpServletRequestIOException);
+            coursesDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            coursesDetailResponse.setInfo(ResponseString.HttpServletRequestIOException);
 
-            return courseDetailResponseProcessor.generateResponse(courseDetailResponse);
+            return courseDetailResponseProcessor.generateResponse(coursesDetailResponse);
         }
         catch (JsonErrorException jsonErrorException){
 
             jsonErrorException.printStackTrace();
 
-            courseDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
-            courseDetailResponse.setInfo(ResponseString.JsonProcessingErrorException);
+            coursesDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            coursesDetailResponse.setInfo(ResponseString.JsonProcessingErrorException);
 
-            return courseDetailResponseProcessor.generateResponse(courseDetailResponse);
+            return courseDetailResponseProcessor.generateResponse(coursesDetailResponse);
         }
         catch (CourseNotFoundException courseNotFoundException){
 
             courseNotFoundException.printStackTrace();
 
-            courseDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
-            courseDetailResponse.setInfo(ResponseString.CourseNotFoundExceptionDescription);
+            coursesDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            coursesDetailResponse.setInfo(ResponseString.CourseNotFoundExceptionDescription);
 
-            return courseDetailResponseProcessor.generateResponse(courseDetailResponse);
+            return courseDetailResponseProcessor.generateResponse(coursesDetailResponse);
 
         }
         catch (CourseInfoErrorException courseInfoErrorException){
 
             courseInfoErrorException.printStackTrace();
 
-            courseDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
-            courseDetailResponse.setInfo(ResponseString.CourseInfoErrorExceptionDescription);
+            coursesDetailResponse.setStatus(ResponseIntStatus.CommonResponseFailStatus);
+            coursesDetailResponse.setInfo(ResponseString.CourseInfoErrorExceptionDescription);
 
-            return courseDetailResponseProcessor.generateResponse(courseDetailResponse);
+            return courseDetailResponseProcessor.generateResponse(coursesDetailResponse);
 
         }
 
-        courseDetailResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
-        courseDetailResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
-        return courseDetailResponseProcessor.generateResponse(courseDetailResponse);
+        coursesDetailResponse.setStatus(ResponseIntStatus.CommonResponseSuccessStatus);
+        coursesDetailResponse.setInfo(ResponseString.CommonResponseSuccessDescription);
+        return courseDetailResponseProcessor.generateResponse(coursesDetailResponse);
     }
 
     @RequestMapping(value = UrlConstant.TeacherInsertScore , method = RequestMethod.POST)

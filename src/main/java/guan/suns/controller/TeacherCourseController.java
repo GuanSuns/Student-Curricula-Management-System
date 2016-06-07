@@ -4,6 +4,7 @@ import guan.suns.controller.JsonProcessor.GetCourseDetailRequestProcessor;
 import guan.suns.controller.JsonProcessor.TeacherJsonProcessor.CreateCourseRequestProcessor;
 import guan.suns.controller.JsonProcessor.TeacherJsonProcessor.DeleteCourseRequestProcessor;
 import guan.suns.controller.JsonProcessor.TeacherJsonProcessor.InsertScoreRequestProcessor;
+import guan.suns.controller.StatisticsProcessor.CourseSelectionStatisticProcessor;
 import guan.suns.controller.mappingUrl.UrlConstant;
 import guan.suns.exception.*;
 import guan.suns.model.*;
@@ -19,6 +20,7 @@ import guan.suns.response.ResponseProcessor.InsertScoreResponseProcessor;
 import guan.suns.response.responseConstant.ResponseIntStatus;
 import guan.suns.response.responseConstant.ResponseString;
 import guan.suns.response.responseItem.CourseDetailItem;
+import guan.suns.response.responseItem.CourseStudentItem;
 import guan.suns.service.CourseService;
 import guan.suns.service.StudentService;
 import guan.suns.service.TeacherService;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Created by lenovo on 2016/5/29.
@@ -44,6 +47,8 @@ public class TeacherCourseController {
     private CourseService courseService;
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private CourseSelectionStatisticProcessor courseSelectionStatisticProcessor;
 
     @RequestMapping(value = UrlConstant.TeacherCreateCourse , method = RequestMethod.POST)
     @ResponseBody
@@ -353,9 +358,26 @@ public class TeacherCourseController {
             String requestBody = IOUtils.toString(inputStream,"utf-8");
             getCourseDetailRequest = getCourseDetailRequestProcessor.getRequest(requestBody);
 
-            course = courseService.getCourseDetail(new CoursePDM(getCourseDetailRequest.getId(),"",null,null,null,null));
+            course = courseService.getCourseDetail(new CoursePDM(getCourseDetailRequest.getId(),getCourseDetailRequest.getName(),null,null,null,null));
 
-            CourseDetailItem courseDetailItem = new CourseDetailItem(course.getCourseID(),course.getCourseName(),course.getTeacherID().getTeacherID(),course.getTeacherID().getTeacherName(),course.getExpiredDate(),course.getSuitableGrade().ordinal(),null);
+            ArrayList<CourseSelectionPDM> courseSelectionPDMs = courseSelectionStatisticProcessor.getCourseSelectionCondition(getCourseDetailRequest);
+            ArrayList<CourseStudentItem> students = new ArrayList<>();
+
+            for(CourseSelectionPDM courseSelectionPDM : courseSelectionPDMs){
+                CourseStudentItem courseStudentItem = new CourseStudentItem();
+
+                if(courseSelectionPDM!=null){
+                    courseStudentItem.setClassName(courseSelectionPDM.getCourseSelectionCompositeId().getStudentID().getClassName());
+                    courseStudentItem.setDepartment(courseSelectionPDM.getCourseSelectionCompositeId().getStudentID().getDepartment().ordinal());
+                    courseStudentItem.setStudentID(courseSelectionPDM.getCourseSelectionCompositeId().getStudentID().getStudentID());
+                    courseStudentItem.setStudentName(courseSelectionPDM.getCourseSelectionCompositeId().getStudentID().getName());
+                    courseStudentItem.setScore(courseSelectionPDM.getScore());
+                    courseStudentItem.setSelectYear(courseSelectionPDM.getSelectYear());
+                    students.add(courseStudentItem);
+                }
+            }
+
+            CourseDetailItem courseDetailItem = new CourseDetailItem(course.getCourseID(),course.getCourseName(),course.getTeacherID().getTeacherID(),course.getTeacherID().getTeacherName(),course.getExpiredDate(),course.getSuitableGrade().ordinal(),students);
             coursesDetailResponse.setDetail(courseDetailItem);
 
         }

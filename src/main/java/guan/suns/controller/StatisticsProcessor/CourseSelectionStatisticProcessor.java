@@ -33,11 +33,22 @@ public class CourseSelectionStatisticProcessor {
             return attendStudents;
         }
 
-        ArrayList<CoursePDM> coursePDMs = courseRepository.findByCourseName(getCourseDetailRequest.getName());
-        if(coursePDMs==null || coursePDMs.isEmpty()){
+        CoursePDM course;
+        if(getCourseDetailRequest.getId()!=null && !getCourseDetailRequest.getId().equals("")){
+
+            course = courseRepository.findOne(getCourseDetailRequest.getId());
+        }
+        else if(getCourseDetailRequest.getName()!=null && !getCourseDetailRequest.getName().equals("")){
+
+            ArrayList<CoursePDM> coursePDMs = courseRepository.findByCourseName(getCourseDetailRequest.getName());
+            if(coursePDMs==null || coursePDMs.isEmpty()){
+                return attendStudents;
+            }
+            course = coursePDMs.get(0);
+        }
+        else{
             return attendStudents;
         }
-        CoursePDM course = coursePDMs.get(0);
 
         ArrayList<CourseSelectionPDM> tempStudents = courseSelectionRepository.findByCourseSelectionCompositeIdCourseID(course);
         if(tempStudents==null || tempStudents.isEmpty()) return attendStudents;

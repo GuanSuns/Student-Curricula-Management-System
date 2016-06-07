@@ -17,12 +17,12 @@ public class CourseDetailItem {
     private Timestamp expiredDate;
     private Integer suitableGrade;
 
-    private ArrayList<StudentAttendClassItem> students;
+    private ArrayList<CourseStudentItem> students;
 
     public CourseDetailItem() {
     }
 
-    public CourseDetailItem(String courseID, String courseName, String teacherID, String teacherName, Timestamp expiredDate, Integer suitableGrade, ArrayList<StudentAttendClassItem> students) {
+    public CourseDetailItem(String courseID, String courseName, String teacherID, String teacherName, Timestamp expiredDate, Integer suitableGrade, ArrayList<CourseStudentItem> students) {
         this.courseID = courseID;
         this.courseName = courseName;
         this.teacherID = teacherID;
@@ -32,11 +32,11 @@ public class CourseDetailItem {
         this.students = students;
     }
 
-    public ArrayList<StudentAttendClassItem> getStudents() {
+    public ArrayList<CourseStudentItem> getStudents() {
         return students;
     }
 
-    public void setStudents(ArrayList<StudentAttendClassItem> students) {
+    public void setStudents(ArrayList<CourseStudentItem> students) {
         this.students = students;
     }
 

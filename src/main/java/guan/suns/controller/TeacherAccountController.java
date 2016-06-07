@@ -4,11 +4,14 @@ import guan.suns.controller.JsonProcessor.DeleteUserRequestProcessor;
 import guan.suns.controller.JsonProcessor.GetUserDetailRequestProcessor;
 import guan.suns.controller.JsonProcessor.LoginRequestProcessor;
 import guan.suns.controller.JsonProcessor.TeacherJsonProcessor.CreateTeacherRequestProcessor;
+import guan.suns.controller.StatisticsProcessor.CourseSelectionStatisticProcessor;
 import guan.suns.controller.mappingUrl.UrlConstant;
 import guan.suns.exception.*;
 import guan.suns.model.CoursePDM;
+import guan.suns.model.CourseSelectionPDM;
 import guan.suns.model.TeacherPDM;
 import guan.suns.request.DeleteUserRequest;
+import guan.suns.request.GetCourseDetailRequest;
 import guan.suns.request.GetUserDetailRequest;
 import guan.suns.request.LoginRequest;
 import guan.suns.request.TeacherRequest.CreateTeacherRequest;
@@ -19,6 +22,7 @@ import guan.suns.response.TeacherDetailResponse;
 import guan.suns.response.responseConstant.ResponseIntStatus;
 import guan.suns.response.responseConstant.ResponseString;
 import guan.suns.response.responseItem.CourseDetailsItem;
+import guan.suns.response.responseItem.CourseStudentItem;
 import guan.suns.service.TeacherService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,8 @@ import java.util.ArrayList;
 public class TeacherAccountController {
     @Autowired
     private TeacherService teacherService;
+    @Autowired
+    private CourseSelectionStatisticProcessor courseSelectionStatisticProcessor;
 
     @RequestMapping(value = UrlConstant.TeacherLogin , method = RequestMethod.POST)
     @ResponseBody
@@ -351,6 +357,26 @@ public class TeacherAccountController {
                 courseDetailsItem.setCourseName(courseItem.getCourseName());
                 courseDetailsItem.setExpiredDate(courseItem.getExpiredDate());
                 courseDetailsItem.setSuitableGrade(courseItem.getSuitableGrade().ordinal());
+
+                ArrayList<CourseSelectionPDM> courseSelectionPDMs = courseSelectionStatisticProcessor.getCourseSelectionCondition(new GetCourseDetailRequest(courseItem.getCourseID(),courseItem.getCourseName()));
+                ArrayList<CourseStudentItem> students = new ArrayList<>();
+
+                for(CourseSelectionPDM courseSelectionPDM : courseSelectionPDMs){
+
+                    CourseStudentItem courseStudentItem = new CourseStudentItem();
+
+                    if(courseSelectionPDM!=null){
+                        courseStudentItem.setClassName(courseSelectionPDM.getCourseSelectionCompositeId().getStudentID().getClassName());
+                        courseStudentItem.setDepartment(courseSelectionPDM.getCourseSelectionCompositeId().getStudentID().getDepartment().ordinal());
+                        courseStudentItem.setStudentID(courseSelectionPDM.getCourseSelectionCompositeId().getStudentID().getStudentID());
+                        courseStudentItem.setStudentName(courseSelectionPDM.getCourseSelectionCompositeId().getStudentID().getName());
+                        courseStudentItem.setScore(courseSelectionPDM.getScore());
+                        courseStudentItem.setSelectYear(courseSelectionPDM.getSelectYear());
+                        students.add(courseStudentItem);
+                    }
+                }
+
+                courseDetailsItem.setStudents(students);
 
                 classes.add(courseDetailsItem);
             }

@@ -17,7 +17,23 @@ public class GetUserDetailRequestProcessor {
 
         try{
             JsonNode root = mapper.readTree(rawJson);
-            request.setId(root.path("id").asText());
+
+            String str = root.path("id").asText();
+            if(str!=null && !str.equals("")){
+                request.setId(str);
+            }
+            else{
+                request.setId(null);
+            }
+
+            str = root.path("name").asText();
+            if(str!=null && !str.equals("")){
+                request.setName(str);
+            }
+            else{
+                request.setName(null);
+            }
+
         }
         catch (Exception e)
         {

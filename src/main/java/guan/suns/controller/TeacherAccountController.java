@@ -338,7 +338,7 @@ public class TeacherAccountController {
             String requestBody = IOUtils.toString(inputStream,"utf-8");
             getUserDetailRequest = getUserDetailRequestProcessor.getRequest(requestBody);
 
-            teacher = teacherService.getTeacherDetail(new TeacherPDM(getUserDetailRequest.getId(),"",null,""));
+            teacher = teacherService.getTeacherDetail(new TeacherPDM(getUserDetailRequest.getId(),getUserDetailRequest.getName(),null,""));
 
             teacherDetailResponse.setTeacherID(teacher.getTeacherID());
             teacherDetailResponse.setTeacherName(teacher.getTeacherName());

@@ -7,6 +7,8 @@ import guan.suns.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 /**
  * Created by lenovo on 2016/5/25.
  */
@@ -98,16 +100,26 @@ public class TeacherServiceImpl implements TeacherService{
     @Override
     public TeacherPDM getTeacherDetail(TeacherPDM teacher) throws UserNotFoundException, UserInfoErrorException {
         if(teacher == null
-                || teacher.getTeacherID() == null
-                || teacher.getTeacherID().length() != 5
-                ){
+                || ( (teacher.getTeacherID() == null || teacher.getTeacherID().equals("") ) &&  (teacher.getTeacherID() == null || teacher.getTeacherName().equals("") ) )
+        ){
             throw new UserInfoErrorException();
         }
 
-        TeacherPDM getTeacher = teacherRepository.findOne(teacher.getTeacherID());
+        TeacherPDM getTeacher;
+        if(teacher.getTeacherID()!=null && teacher.getTeacherID().equals("")){
 
-        if(getTeacher==null){
-            throw new UserNotFoundException();
+            getTeacher = teacherRepository.findOne(teacher.getTeacherID());
+            if(getTeacher==null){
+                throw new UserNotFoundException();
+            }
+
+        }
+        else{
+            ArrayList<TeacherPDM> teacherPDMs = teacherRepository.findByTeacherName(teacher.getTeacherName());
+            if(teacherPDMs==null || teacherPDMs.isEmpty()){
+                throw new UserNotFoundException();
+            }
+            getTeacher = teacherPDMs.get(0);
         }
 
         TeacherPDM returnTeacher = new TeacherPDM(getTeacher.getTeacherID(),getTeacher.getTeacherName(),getTeacher.getDepartment(),getTeacher.getPassword());

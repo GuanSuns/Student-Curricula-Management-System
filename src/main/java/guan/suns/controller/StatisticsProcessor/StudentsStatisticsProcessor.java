@@ -81,7 +81,13 @@ public class StudentsStatisticsProcessor {
         }
 
         studentsStatisticsResponse.setStudents(studentsDetails);
-        studentsStatisticsResponse.setAvg(totalScore/cntCourse);
+        if(cntCourse==0){
+            studentsStatisticsResponse.setAvg(Float.valueOf(0));
+        }
+        else{
+            studentsStatisticsResponse.setAvg(totalScore/cntCourse);
+        }
+
 
         return studentsStatisticsResponse;
     }

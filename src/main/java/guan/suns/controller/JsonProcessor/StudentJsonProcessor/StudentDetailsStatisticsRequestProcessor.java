@@ -19,6 +19,7 @@ public class StudentDetailsStatisticsRequestProcessor {
             JsonNode root = mapper.readTree(rawJson);
 
             String str = root.path("name").asText();
+            System.out.println("Name: "+str);
             if(str==null || str.equals("")) {
                 request.setName(null);
             }
@@ -27,6 +28,7 @@ public class StudentDetailsStatisticsRequestProcessor {
             }
 
             str = root.path("className").asText();
+            System.out.println("className: "+str);
             if(str==null || str.equals("")) {
                 request.setClassName(null);
             }
@@ -35,6 +37,7 @@ public class StudentDetailsStatisticsRequestProcessor {
             }
 
             str = root.path("department").asText();
+            System.out.println("department: "+str);
             if(str==null || str.equals("")) {
                 request.setDepartment(null);
             }
@@ -43,6 +46,7 @@ public class StudentDetailsStatisticsRequestProcessor {
             }
 
             str = root.path("studentID").asText();
+            System.out.println("studentID: "+str);
             if(str==null || str.equals("")) {
                 request.setStudentID(null);
             }
@@ -51,6 +55,7 @@ public class StudentDetailsStatisticsRequestProcessor {
             }
 
             str = root.path("courseID").asText();
+            System.out.println("courseID: "+str);
             if(str==null || str.equals("")) {
                 request.setCourseID(null);
             }
@@ -59,6 +64,7 @@ public class StudentDetailsStatisticsRequestProcessor {
             }
 
             str = root.path("courseName").asText();
+            System.out.println("courseName: "+str);
             if(str==null || str.equals("")) {
                 request.setCourseName(null);
             }

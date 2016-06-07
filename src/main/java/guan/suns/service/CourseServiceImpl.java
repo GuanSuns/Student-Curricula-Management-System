@@ -123,15 +123,25 @@ public class CourseServiceImpl implements CourseService {
     public CoursePDM getCourseDetail(CoursePDM course) throws CourseInfoErrorException, CourseNotFoundException {
 
         if(course == null
-                || course.getCourseID() == null
-                || course.getCourseID().equals("")
+                || ( (course.getCourseID()==null || course.getCourseID().equals("")) &&  (course.getCourseName()==null || course.getCourseName().equals("")) )
                 ) {
             throw new CourseInfoErrorException();
         }
 
-        CoursePDM detailCourse = courseRepository.findOne(course.getCourseID());
-        if(detailCourse == null){
-            throw new CourseNotFoundException();
+        CoursePDM detailCourse;
+        if(course.getCourseID() != null && !course.getCourseID().equals("")){
+
+            detailCourse = courseRepository.findOne(course.getCourseID());
+            if(detailCourse == null){
+                throw new CourseNotFoundException();
+            }
+        }
+        else{
+            ArrayList<CoursePDM> coursePDMs = courseRepository.findByCourseName(course.getCourseName());
+            if(coursePDMs==null || coursePDMs.isEmpty()) {
+                throw new CourseNotFoundException();
+            }
+            detailCourse = coursePDMs.get(0);
         }
 
         CoursePDM returnCourse = new CoursePDM(detailCourse.getCourseID(),detailCourse.getCourseName(),detailCourse.getTeacherID(),detailCourse.getCredit(),detailCourse.getExpiredDate(),detailCourse.getSuitableGrade());

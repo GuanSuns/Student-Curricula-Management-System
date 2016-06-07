@@ -1,5 +1,6 @@
 package guan.suns.service;
 
+import guan.suns.controller.StatisticsProcessor.CourseSelectionStatisticProcessor;
 import guan.suns.exception.*;
 import guan.suns.model.CoursePDM;
 import guan.suns.model.CourseSelectionPDM;
@@ -7,9 +8,11 @@ import guan.suns.model.TeacherPDM;
 import guan.suns.repository.CourseRepository;
 import guan.suns.repository.CourseSelectionRepository;
 import guan.suns.repository.TeacherRepository;
+import guan.suns.request.GetCourseDetailRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,6 +28,8 @@ public class CourseServiceImpl implements CourseService {
     private TeacherRepository teacherRepository;
     @Autowired
     private CourseSelectionRepository courseSelectionRepository;
+    @Autowired
+    private CourseSelectionStatisticProcessor courseSelectionStatisticProcessor;
 
     @Override
     public boolean createCourse(CoursePDM course) throws CourseExistedException, CourseInfoErrorException, TeacherNotExistedException {
@@ -99,6 +104,14 @@ public class CourseServiceImpl implements CourseService {
         CoursePDM deleteCourse = courseRepository.findOne(course.getCourseID());
         if(deleteCourse == null){
             throw new CourseNotFoundException();
+        }
+
+        ArrayList<CourseSelectionPDM> courseSelectionPDMs = courseSelectionStatisticProcessor.getCourseSelectionCondition(new GetCourseDetailRequest(deleteCourse.getCourseID(),deleteCourse.getCourseName()));
+
+        for(CourseSelectionPDM courseSelectionPDM : courseSelectionPDMs){
+            if(courseSelectionPDM!=null){
+                courseSelectionRepository.delete(courseSelectionPDM);
+            }
         }
 
         courseRepository.delete(deleteCourse);

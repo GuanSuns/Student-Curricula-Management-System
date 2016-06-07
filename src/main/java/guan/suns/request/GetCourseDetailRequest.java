@@ -6,12 +6,22 @@ package guan.suns.request;
 public class GetCourseDetailRequest {
 
     private String id;
+    private String name;
 
     public GetCourseDetailRequest() {
     }
 
-    public GetCourseDetailRequest(String id) {
+    public GetCourseDetailRequest(String id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getId() {

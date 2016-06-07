@@ -1,9 +1,7 @@
 package guan.suns.service;
 
-import guan.suns.exception.PasswordErrorException;
-import guan.suns.exception.UserExistedException;
-import guan.suns.exception.UserInfoErrorException;
-import guan.suns.exception.UserNotFoundException;
+import guan.suns.exception.*;
+import guan.suns.model.CoursePDM;
 import guan.suns.model.TeacherPDM;
 import guan.suns.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,8 @@ public class TeacherServiceImpl implements TeacherService{
 
     @Autowired
     private TeacherRepository teacherRepository;
+    @Autowired
+    private CourseService courseService;
 
     @Override
     public TeacherPDM loginTeacher(TeacherPDM teacher) throws UserNotFoundException, PasswordErrorException {
@@ -72,10 +72,25 @@ public class TeacherServiceImpl implements TeacherService{
                 )
             return false;
 
-        TeacherPDM newTeacher = teacherRepository.findOne(teacher.getTeacherID());
-        if(newTeacher == null) throw new UserNotFoundException();
+        TeacherPDM deleteTeacher = teacherRepository.findOne(teacher.getTeacherID());
+        if(deleteTeacher == null) throw new UserNotFoundException();
 
-        teacherRepository.delete(newTeacher);
+        for(CoursePDM course: deleteTeacher.getCourses()){
+            if(course!=null){
+                try{
+                    courseService.deleteCourse(course);
+                }
+                catch (CourseInfoErrorException courseInfoErrorException){
+                    courseInfoErrorException.printStackTrace();
+                }
+                catch (CourseNotFoundException courseNotFoundException){
+                    courseNotFoundException.printStackTrace();
+                }
+
+            }
+        }
+
+        teacherRepository.delete(deleteTeacher);
 
         return true;
     }

@@ -106,7 +106,7 @@ public class TeacherServiceImpl implements TeacherService{
         }
 
         TeacherPDM getTeacher;
-        if(teacher.getTeacherID()!=null && teacher.getTeacherID().equals("")){
+        if(teacher.getTeacherID()!=null && !teacher.getTeacherID().equals("")){
 
             getTeacher = teacherRepository.findOne(teacher.getTeacherID());
             if(getTeacher==null){
